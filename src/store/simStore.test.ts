@@ -10,10 +10,34 @@ describe("simStore", () => {
 		const state = useSimStore.getState();
 		expect(state.config).toBeNull();
 		expect(state.result).toBeNull();
+		expect(state.baseline).toBeNull();
 		expect(state.selectedCountry).toBeNull();
 		expect(state.scrubPosition).toBe(0);
 		expect(state.isRunning).toBe(false);
 		expect(state.progress).toBe(0);
+	});
+
+	it("setBaseline stores baseline data", () => {
+		const mockBaseline = {
+			USA: {
+				id: "USA",
+				name: "US",
+				gdpGrowthRate: 2.5,
+				tradeOpenness: 56,
+				militarySpendingPct: 3.4,
+				domesticStability: 58,
+				energyIndependence: 88,
+				techSelfSufficiency: 92,
+				immigrationRate: 4,
+				foreignReserves: 3.2,
+				debtToGdp: 123,
+				inflationRate: 4.1,
+				allianceStrength: {},
+				tradeVolume: {},
+			},
+		};
+		useSimStore.getState().setBaseline(mockBaseline);
+		expect(useSimStore.getState().baseline).toBe(mockBaseline);
 	});
 
 	it("selectCountry sets selectedCountry", () => {
@@ -61,6 +85,7 @@ describe("simStore", () => {
 
 		const state = useSimStore.getState();
 		expect(state.selectedCountry).toBeNull();
+		expect(state.baseline).toBeNull();
 		expect(state.progress).toBe(0);
 		expect(state.scrubPosition).toBe(0);
 		expect(state.isRunning).toBe(false);
