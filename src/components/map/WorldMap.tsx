@@ -2,7 +2,7 @@
 
 import { geoNaturalEarth1, geoPath } from "d3-geo";
 import type { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { feature } from "topojson-client";
 import type { Topology } from "topojson-specification";
 import { BLOC_MEMBERS, isBloc, NUMERIC_TO_ENTITY } from "@/data/countries";
@@ -30,7 +30,6 @@ function getBlocNumericIds(entityId: string): Set<string> {
 
 export default function WorldMap() {
 	const [features, setFeatures] = useState<CountryFeature[]>([]);
-	const svgRef = useRef<SVGSVGElement>(null);
 	const selectedCountry = useSimStore((s) => s.selectedCountry);
 	const selectCountry = useSimStore((s) => s.selectCountry);
 
@@ -72,7 +71,6 @@ export default function WorldMap() {
 
 	return (
 		<svg
-			ref={svgRef}
 			viewBox="0 0 960 500"
 			className="w-full h-auto"
 			role="img"
