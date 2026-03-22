@@ -4,6 +4,8 @@ import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import CountrySelector from "@/components/controls/CountrySelector";
 import LeverPanel from "@/components/controls/LeverPanel";
+import TimelineScrubber from "@/components/output/TimelineScrubber";
+import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import { useSimulation } from "@/hooks/useSimulation";
 import { useSimStore } from "@/store/simStore";
 import type { CountryState } from "@/types";
@@ -16,11 +18,16 @@ const WorldMap = dynamic(() => import("@/components/map/WorldMap"), {
 	),
 });
 
+const MetricPanel = dynamic(() => import("@/components/output/MetricPanel"), {
+	ssr: false,
+});
+
 export default function Home() {
 	const { run, isRunning } = useSimulation();
 	const setBaseline = useSimStore((s) => s.setBaseline);
 	const config = useSimStore((s) => s.config);
 	const result = useSimStore((s) => s.result);
+	const selectedCountry = useSimStore((s) => s.selectedCountry);
 
 	useEffect(() => {
 		const baselineMap: Record<string, CountryState> = {};
@@ -32,6 +39,8 @@ export default function Home() {
 
 	return (
 		<main className="min-h-screen p-6 max-w-7xl mx-auto">
+			<LoadingOverlay />
+
 			<header className="mb-8">
 				<h1 className="text-5xl font-bold tracking-tight mb-2">Sovereign</h1>
 				<p className="text-lg font-light text-zinc-400 max-w-prose">
@@ -40,7 +49,7 @@ export default function Home() {
 				</p>
 			</header>
 
-			<section className="grid grid-cols-[240px_1fr_auto] gap-6 mb-8 items-end">
+			<section className="grid grid-cols-[240px_1fr_auto] gap-6 mb-6 items-end">
 				<CountrySelector />
 				<LeverPanel />
 				<button
@@ -56,10 +65,22 @@ export default function Home() {
 				<WorldMap />
 			</section>
 
+			<section className="mb-6">
+				<TimelineScrubber />
+			</section>
+
 			{result && (
-				<p className="text-sm text-zinc-500">
-					Completed in {result.runDurationMs.toFixed(0)}ms
+				<p className="text-xs text-zinc-500 mb-6">
+					{config?.runs ?? 1} runs completed in{" "}
+					{result.runDurationMs.toFixed(0)}
+					ms
 				</p>
+			)}
+
+			{result && selectedCountry && (
+				<section className="mb-8">
+					<MetricPanel />
+				</section>
 			)}
 		</main>
 	);

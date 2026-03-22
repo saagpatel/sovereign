@@ -17,9 +17,9 @@ export default function CountrySelector() {
 				magnitude: config?.lever.magnitude ?? 0,
 				label: "",
 			},
-			runs: 1,
+			runs: 50,
 			horizon: 60,
-			noiseScale: 0,
+			noiseScale: 0.15,
 		});
 	};
 

@@ -8,6 +8,7 @@ import type { Topology } from "topojson-specification";
 import ChoroplethLayer, {
 	type CountryFeature,
 } from "@/components/map/ChoroplethLayer";
+import ConnectionLayer from "@/components/map/ConnectionLayer";
 import { BLOC_MEMBERS, isBloc, NUMERIC_TO_ENTITY } from "@/data/countries";
 import { useSimStore } from "@/store/simStore";
 
@@ -79,6 +80,7 @@ export default function WorldMap() {
 				selectedNumericIds={selectedNumericIds}
 				onClickCountry={handleClick}
 			/>
+			<ConnectionLayer />
 		</svg>
 	);
 }

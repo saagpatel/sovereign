@@ -85,9 +85,9 @@ export default function LeverPanel() {
 				magnitude,
 				label: getClosestLabel(domain, magnitude),
 			},
-			runs: 1,
+			runs: 50,
 			horizon: 60,
-			noiseScale: 0,
+			noiseScale: 0.15,
 		});
 	};
 

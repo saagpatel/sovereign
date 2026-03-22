@@ -5,6 +5,7 @@ import type {
 	ScalarVariable,
 	WeightMatrix,
 } from "@/types";
+import { gaussianNoise } from "./noise";
 import type {
 	MonthlySnapshot,
 	SimulationRun,
@@ -130,6 +131,8 @@ export function propagateMonth(
 	lever: PolicyLever,
 	weights: WeightMatrix,
 	month: number,
+	noiseScale = 0,
+	noiseRng?: () => number,
 ): { nextDeltas: WorldDelta; events: CausalEvent[] } {
 	const nextDeltas = cloneWorldDelta(currentDeltas);
 	const events: CausalEvent[] = [];
@@ -194,7 +197,12 @@ export function propagateMonth(
 					if (!edge) continue;
 					if (edge.delayMonths > month) continue;
 
-					const contribution = sourceDelta * edge.weight * DECAY_FACTOR;
+					let contribution = sourceDelta * edge.weight * DECAY_FACTOR;
+					// Inject Gaussian noise: σ = noiseScale × |baseInfluence|
+					if (noiseScale > 0 && noiseRng) {
+						const sigma = noiseScale * Math.abs(contribution);
+						contribution += gaussianNoise(0, sigma, noiseRng);
+					}
 					const prior = contributions[variable];
 					if (
 						prior === undefined ||
@@ -241,14 +249,16 @@ export function propagateMonth(
 // ---------------------------------------------------------------------------
 
 /**
- * Runs the full deterministic simulation over `horizon` months.
- * Each Monte Carlo run should call this with noise-perturbed weights.
+ * Runs a single simulation pass over `horizon` months.
+ * Pass noiseScale > 0 and noiseRng for Monte Carlo noise injection.
  */
 export function runSimulation(
 	baseline: WorldState,
 	lever: PolicyLever,
 	weights: WeightMatrix,
 	horizon: number,
+	noiseScale = 0,
+	noiseRng?: () => number,
 ): SimulationRun {
 	const countryIds = Object.keys(baseline);
 	let currentDeltas = createEmptyDeltas(countryIds);
@@ -263,6 +273,8 @@ export function runSimulation(
 			lever,
 			weights,
 			month,
+			noiseScale,
+			noiseRng,
 		);
 		currentDeltas = nextDeltas;
 		snapshots.push({ month, deltas: cloneWorldDelta(currentDeltas) });
