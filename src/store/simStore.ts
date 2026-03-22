@@ -1,9 +1,10 @@
 import { create } from "zustand";
-import type { SimConfig, SimResult } from "@/types";
+import type { CountryState, SimConfig, SimResult } from "@/types";
 
 interface SimStore {
 	config: SimConfig | null;
 	result: SimResult | null;
+	baseline: Record<string, CountryState> | null;
 	selectedCountry: string | null;
 	scrubPosition: number;
 	isRunning: boolean;
@@ -11,6 +12,7 @@ interface SimStore {
 
 	setConfig: (config: SimConfig) => void;
 	setResult: (result: SimResult) => void;
+	setBaseline: (data: Record<string, CountryState>) => void;
 	selectCountry: (id: string | null) => void;
 	setScrubPosition: (month: number) => void;
 	setRunning: (running: boolean) => void;
@@ -21,6 +23,7 @@ interface SimStore {
 const initialState = {
 	config: null,
 	result: null,
+	baseline: null,
 	selectedCountry: null,
 	scrubPosition: 0,
 	isRunning: false,
@@ -32,6 +35,7 @@ export const useSimStore = create<SimStore>()((set) => ({
 
 	setConfig: (config) => set({ config }),
 	setResult: (result) => set({ result, isRunning: false, progress: 100 }),
+	setBaseline: (data) => set({ baseline: data }),
 	selectCountry: (id) => set({ selectedCountry: id }),
 	setScrubPosition: (month) => set({ scrubPosition: month }),
 	setRunning: (running) => set({ isRunning: running }),

@@ -5,16 +5,13 @@ import type { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 import { useCallback, useEffect, useState } from "react";
 import { feature } from "topojson-client";
 import type { Topology } from "topojson-specification";
+import ChoroplethLayer, {
+	type CountryFeature,
+} from "@/components/map/ChoroplethLayer";
 import { BLOC_MEMBERS, isBloc, NUMERIC_TO_ENTITY } from "@/data/countries";
 import { useSimStore } from "@/store/simStore";
 
 type BlocId = keyof typeof BLOC_MEMBERS;
-
-interface CountryFeature {
-	id: string;
-	entityId: string | null;
-	path: string;
-}
 
 const projection = geoNaturalEarth1().scale(153).translate([480, 250]);
 const pathGenerator = geoPath(projection);
@@ -59,7 +56,6 @@ export default function WorldMap() {
 		(entityId: string | null) => {
 			if (!entityId) return;
 			selectCountry(entityId);
-			console.log(entityId);
 		},
 		[selectCountry],
 	);
@@ -76,42 +72,13 @@ export default function WorldMap() {
 			role="img"
 			aria-label="World map showing 18 countries and blocs"
 		>
-			{/* Background */}
 			<rect width="960" height="500" fill="#0a0a0f" />
-
-			{features.map((f) => {
-				const isSelected =
-					selectedCountry !== null &&
-					(f.entityId === selectedCountry ||
-						(selectedNumericIds !== null && selectedNumericIds.has(f.id)));
-
-				const isModeled = f.entityId !== null;
-
-				let fill: string;
-				if (isSelected) {
-					fill = "#3b82f6";
-				} else if (isModeled) {
-					fill = "#1c1c26";
-				} else {
-					fill = "#111118";
-				}
-
-				return (
-					<path
-						key={f.id}
-						d={f.path}
-						fill={fill}
-						stroke="#2a2a3a"
-						strokeWidth={0.5}
-						className={
-							isModeled
-								? "cursor-pointer transition-colors duration-150 hover:brightness-125"
-								: ""
-						}
-						onClick={() => handleClick(f.entityId)}
-					/>
-				);
-			})}
+			<ChoroplethLayer
+				features={features}
+				selectedCountry={selectedCountry}
+				selectedNumericIds={selectedNumericIds}
+				onClickCountry={handleClick}
+			/>
 		</svg>
 	);
 }

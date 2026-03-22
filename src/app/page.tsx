@@ -1,9 +1,13 @@
 "use client";
 
-import { wrap } from "comlink";
 import dynamic from "next/dynamic";
-import { useCallback, useState } from "react";
-import type { SimulationWorkerApi } from "@/sim/SimulationWorker";
+import { useEffect } from "react";
+import CountrySelector from "@/components/controls/CountrySelector";
+import LeverPanel from "@/components/controls/LeverPanel";
+import { useSimulation } from "@/hooks/useSimulation";
+import { useSimStore } from "@/store/simStore";
+import type { CountryState } from "@/types";
+import countryDataJson from "../../public/data/countryData.json";
 
 const WorldMap = dynamic(() => import("@/components/map/WorldMap"), {
 	ssr: false,
@@ -13,25 +17,18 @@ const WorldMap = dynamic(() => import("@/components/map/WorldMap"), {
 });
 
 export default function Home() {
-	const [workerResult, setWorkerResult] = useState<number | null>(null);
-	const [workerLoading, setWorkerLoading] = useState(false);
+	const { run, isRunning } = useSimulation();
+	const setBaseline = useSimStore((s) => s.setBaseline);
+	const config = useSimStore((s) => s.config);
+	const result = useSimStore((s) => s.result);
 
-	const testWorker = useCallback(async () => {
-		setWorkerLoading(true);
-		try {
-			const worker = new Worker(
-				new URL("../sim/SimulationWorker.ts", import.meta.url),
-			);
-			const api = wrap<SimulationWorkerApi>(worker);
-			const result = await api.add(17, 25);
-			setWorkerResult(result);
-			worker.terminate();
-		} catch (err) {
-			console.error("Worker failed:", err);
-		} finally {
-			setWorkerLoading(false);
+	useEffect(() => {
+		const baselineMap: Record<string, CountryState> = {};
+		for (const entry of countryDataJson) {
+			baselineMap[entry.id] = entry as unknown as CountryState;
 		}
-	}, []);
+		setBaseline(baselineMap);
+	}, [setBaseline]);
 
 	return (
 		<main className="min-h-screen p-6 max-w-7xl mx-auto">
@@ -43,25 +40,27 @@ export default function Home() {
 				</p>
 			</header>
 
-			<section className="mb-8">
+			<section className="grid grid-cols-[240px_1fr_auto] gap-6 mb-8 items-end">
+				<CountrySelector />
+				<LeverPanel />
+				<button
+					onClick={run}
+					disabled={isRunning || !config}
+					className="px-6 py-2.5 bg-accent hover:bg-accent-dim text-white font-bold rounded-lg transition-colors duration-150 disabled:opacity-50 h-[42px]"
+				>
+					{isRunning ? "Running..." : "Run Simulation"}
+				</button>
+			</section>
+
+			<section className="mb-4">
 				<WorldMap />
 			</section>
 
-			<section className="flex items-center gap-4">
-				<button
-					onClick={testWorker}
-					disabled={workerLoading}
-					className="px-4 py-2.5 bg-accent hover:bg-accent-dim text-white font-bold rounded-lg transition-colors duration-150 disabled:opacity-50"
-				>
-					{workerLoading ? "Running..." : "Test Worker (17 + 25)"}
-				</button>
-				{workerResult !== null && (
-					<span className="text-zinc-300 font-light">
-						Result:{" "}
-						<span className="font-bold text-positive">{workerResult}</span>
-					</span>
-				)}
-			</section>
+			{result && (
+				<p className="text-sm text-zinc-500">
+					Completed in {result.runDurationMs.toFixed(0)}ms
+				</p>
+			)}
 		</main>
 	);
 }
