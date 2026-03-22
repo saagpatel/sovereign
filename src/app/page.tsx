@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import CountrySelector from "@/components/controls/CountrySelector";
 import LeverPanel from "@/components/controls/LeverPanel";
+import CausalChain from "@/components/output/CausalChain";
 import TimelineScrubber from "@/components/output/TimelineScrubber";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import { useSimulation } from "@/hooks/useSimulation";
@@ -80,6 +81,12 @@ export default function Home() {
 			{result && selectedCountry && (
 				<section className="mb-8">
 					<MetricPanel />
+				</section>
+			)}
+
+			{result && (
+				<section className="mb-8">
+					<CausalChain />
 				</section>
 			)}
 		</main>

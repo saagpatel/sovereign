@@ -113,8 +113,16 @@ function buildSimResult(
 
 	const confidenceBands = aggregateBands(allSnapshots, baseline, countryIds);
 
-	// Top 10 causal events by |delta|
-	const causalChain = allEvents
+	// Deduplicate events across runs (keep highest |delta| per unique key)
+	const eventMap = new Map<string, (typeof allEvents)[number]>();
+	for (const event of allEvents) {
+		const key = `${event.month}-${event.sourceCountry}-${event.targetCountry}-${event.variable}`;
+		const existing = eventMap.get(key);
+		if (!existing || Math.abs(event.delta) > Math.abs(existing.delta)) {
+			eventMap.set(key, event);
+		}
+	}
+	const causalChain = Array.from(eventMap.values())
 		.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta))
 		.slice(0, 10);
 

@@ -123,9 +123,9 @@ describe("WEIGHT_MATRIX — structure", () => {
 		}
 	});
 
-	it("non-trade domains are empty objects", () => {
+	it("non-trade domains have at least one source country", () => {
 		for (const domain of NON_TRADE_DOMAINS) {
-			expect(WEIGHT_MATRIX[domain]).toEqual({});
+			expect(Object.keys(WEIGHT_MATRIX[domain]).length).toBeGreaterThan(0);
 		}
 	});
 });
