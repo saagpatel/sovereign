@@ -142,3 +142,76 @@ describe("WEIGHT_MATRIX — specific edge checks", () => {
 		expect(edge).toBeDefined();
 	});
 });
+
+describe("Energy domain sign convention", () => {
+	it("RUS→EUR gdpGrowthRate weight is positive", () => {
+		const edge = WEIGHT_MATRIX.energy["RUS"]?.["EUR"]?.["gdpGrowthRate"];
+		expect(edge).toBeDefined();
+		expect(edge!.weight).toBeGreaterThan(0);
+	});
+
+	it("RUS→EUR inflationRate weight is negative", () => {
+		const edge = WEIGHT_MATRIX.energy["RUS"]?.["EUR"]?.["inflationRate"];
+		expect(edge).toBeDefined();
+		expect(edge!.weight).toBeLessThan(0);
+	});
+
+	it("SAU→CHN gdpGrowthRate weight is positive", () => {
+		const edge = WEIGHT_MATRIX.energy["SAU"]?.["CHN"]?.["gdpGrowthRate"];
+		expect(edge).toBeDefined();
+		expect(edge!.weight).toBeGreaterThan(0);
+	});
+
+	it("SAU→CHN inflationRate weight is negative", () => {
+		const edge = WEIGHT_MATRIX.energy["SAU"]?.["CHN"]?.["inflationRate"];
+		expect(edge).toBeDefined();
+		expect(edge!.weight).toBeLessThan(0);
+	});
+});
+
+describe("Monetary domain sign convention", () => {
+	it("USA→EUR gdpGrowthRate weight is positive", () => {
+		const edge = WEIGHT_MATRIX.monetary["USA"]?.["EUR"]?.["gdpGrowthRate"];
+		expect(edge).toBeDefined();
+		expect(edge!.weight).toBeGreaterThan(0);
+	});
+
+	it("USA→CHN gdpGrowthRate weight is positive", () => {
+		const edge = WEIGHT_MATRIX.monetary["USA"]?.["CHN"]?.["gdpGrowthRate"];
+		expect(edge).toBeDefined();
+		expect(edge!.weight).toBeGreaterThan(0);
+	});
+});
+
+describe("Military domain completeness", () => {
+	it("USA→CHN domesticStability edge exists with negative weight", () => {
+		const edge = WEIGHT_MATRIX.military["USA"]?.["CHN"]?.["domesticStability"];
+		expect(edge).toBeDefined();
+		expect(edge!.weight).toBeLessThan(0);
+	});
+
+	it("all 6 domains have >= 40 edges", () => {
+		const domains = [
+			"trade",
+			"energy",
+			"military",
+			"immigration",
+			"monetary",
+			"technology",
+		] as const;
+		for (const domain of domains) {
+			let count = 0;
+			const domainEdges = WEIGHT_MATRIX[domain];
+			for (const sourceISO of Object.keys(domainEdges)) {
+				const targetMap = domainEdges[sourceISO];
+				if (!targetMap) continue;
+				for (const targetISO of Object.keys(targetMap)) {
+					const varMap = targetMap[targetISO];
+					if (!varMap) continue;
+					count += Object.keys(varMap).length;
+				}
+			}
+			expect(count).toBeGreaterThanOrEqual(40);
+		}
+	});
+});

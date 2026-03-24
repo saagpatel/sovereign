@@ -31,6 +31,7 @@ export default function ScenarioLibrary() {
 	)?.id;
 
 	const handleScenarioClick = (scenarioId: string) => {
+		if (useSimStore.getState().isRunning) return;
 		const scenario = SCENARIOS.find((s) => s.id === scenarioId);
 		if (!scenario) return;
 

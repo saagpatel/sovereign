@@ -1010,6 +1010,20 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 						"US pressure on Pakistan over counter-terrorism and India relations creates internal political tensions",
 				},
 			},
+			CHN: {
+				domesticStability: {
+					weight: -0.5,
+					delayMonths: 2,
+					mechanism:
+						"US Indo-Pacific military buildup signals deterrence, elevating Chinese threat perception and straining regime stability narrative",
+				},
+				militarySpendingPct: {
+					weight: 0.15,
+					delayMonths: 4,
+					mechanism:
+						"US military posturing in the Indo-Pacific triggers increased Chinese defence spending in response",
+				},
+			},
 		},
 
 		// ── CHN: Regional threat expansion ────────────────────────────────────────
