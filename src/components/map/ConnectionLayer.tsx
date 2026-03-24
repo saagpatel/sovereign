@@ -10,6 +10,8 @@ import { useSimStore } from "@/store/simStore";
 
 const projection = geoNaturalEarth1().scale(153).translate([480, 250]);
 
+const CONNECTION_COLOR = "#60a5fa";
+
 interface CountryCentroid {
 	entityId: string;
 	x: number;
@@ -53,6 +55,9 @@ export default function ConnectionLayer() {
 				}
 
 				setCentroids(centrMap);
+			})
+			.catch((err: unknown) => {
+				console.error("Failed to load world topology for connections:", err);
 			});
 	}, []);
 
@@ -129,7 +134,7 @@ export default function ConnectionLayer() {
 						y1={from.y}
 						x2={to.x}
 						y2={to.y}
-						stroke="#60a5fa"
+						stroke={CONNECTION_COLOR}
 						strokeWidth={strokeWidth}
 						opacity={opacity}
 						strokeLinecap="round"

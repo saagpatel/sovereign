@@ -50,6 +50,9 @@ export default function WorldMap() {
 				});
 
 				setFeatures(mapped);
+			})
+			.catch((err: unknown) => {
+				console.error("Failed to load world topology:", err);
 			});
 	}, []);
 

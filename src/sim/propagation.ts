@@ -148,10 +148,10 @@ export function propagateMonth(
 		}
 
 		for (const { variable, delta } of shocks) {
-			const baseline_val = (baseline[actingISO]?.[variable] ?? 0) as number;
+			const baselineVal = (baseline[actingISO]?.[variable] ?? 0) as number;
 			const current = nextDeltas[actingISO][variable] + delta;
 			const clamped =
-				clampVariable(variable, baseline_val + current) - baseline_val;
+				clampVariable(variable, baselineVal + current) - baselineVal;
 			nextDeltas[actingISO][variable] = clamped;
 
 			if (Math.abs(clamped) > CAUSAL_EVENT_THRESHOLD) {

@@ -75,70 +75,75 @@ export function useBaselineRefresh() {
 		if (!baseline) return;
 		setIsRefreshing(true);
 
-		const updates: Record<string, Partial<CountryState>> = {};
-		const indicatorCodes = Object.keys(WB_INDICATORS);
+		try {
+			const updates: Record<string, Partial<CountryState>> = {};
+			const indicatorCodes = Object.keys(WB_INDICATORS);
 
-		// Build all fetch tasks
-		const tasks: Array<{
-			iso3: string;
-			iso2: string;
-			code: string;
-			variable: string;
-		}> = [];
-		for (const country of COUNTRIES) {
-			const iso2 = ISO3_TO_ISO2[country.id];
-			if (!iso2) continue;
-			for (const code of indicatorCodes) {
-				tasks.push({
-					iso3: country.id,
-					iso2,
-					code,
-					variable: WB_INDICATORS[code],
-				});
-			}
-		}
-
-		// Process in batches
-		for (let i = 0; i < tasks.length; i += BATCH_SIZE) {
-			const batch = tasks.slice(i, i + BATCH_SIZE);
-			const results = await Promise.allSettled(
-				batch.map(async (task) => {
-					const value = await fetchIndicator(task.iso2, task.code);
-					return { ...task, value };
-				}),
-			);
-
-			for (const result of results) {
-				if (result.status === "fulfilled" && result.value.value !== null) {
-					const { iso3, variable, value } = result.value;
-					if (!updates[iso3]) updates[iso3] = {};
-					(updates[iso3] as Record<string, number>)[variable] = value;
+			// Build all fetch tasks
+			const tasks: Array<{
+				iso3: string;
+				iso2: string;
+				code: string;
+				variable: string;
+			}> = [];
+			for (const country of COUNTRIES) {
+				const iso2 = ISO3_TO_ISO2[country.id];
+				if (!iso2) continue;
+				for (const code of indicatorCodes) {
+					tasks.push({
+						iso3: country.id,
+						iso2,
+						code,
+						variable: WB_INDICATORS[code],
+					});
 				}
 			}
-		}
 
-		// Merge updates into baseline
-		const merged = { ...baseline };
-		for (const [iso, partial] of Object.entries(updates)) {
-			if (merged[iso]) {
-				merged[iso] = { ...merged[iso], ...partial };
+			// Process in batches
+			for (let i = 0; i < tasks.length; i += BATCH_SIZE) {
+				const batch = tasks.slice(i, i + BATCH_SIZE);
+				const results = await Promise.allSettled(
+					batch.map(async (task) => {
+						const value = await fetchIndicator(task.iso2, task.code);
+						return { ...task, value };
+					}),
+				);
+
+				for (const result of results) {
+					if (result.status === "fulfilled" && result.value.value !== null) {
+						const { iso3, variable, value } = result.value;
+						if (!updates[iso3]) updates[iso3] = {};
+						(updates[iso3] as Record<string, number>)[variable] = value;
+					}
+				}
 			}
-		}
 
-		// Cache
-		const cacheEntry: CacheEntry = {
-			data: updates,
-			refreshedAt: Date.now(),
-		};
-		try {
-			localStorage.setItem(CACHE_KEY, JSON.stringify(cacheEntry));
-		} catch {
-			// localStorage full — silently skip
-		}
+			// Merge updates into baseline
+			const merged = { ...baseline };
+			for (const [iso, partial] of Object.entries(updates)) {
+				if (merged[iso]) {
+					merged[iso] = { ...merged[iso], ...partial };
+				}
+			}
 
-		setBaseline(merged);
-		setLastRefreshed(new Date().toLocaleDateString());
-		setIsRefreshing(false);
+			// Cache
+			const cacheEntry: CacheEntry = {
+				data: updates,
+				refreshedAt: Date.now(),
+			};
+			try {
+				localStorage.setItem(CACHE_KEY, JSON.stringify(cacheEntry));
+			} catch {
+				// localStorage full — silently skip
+			}
+
+			setBaseline(merged);
+			setLastRefreshed(new Date().toLocaleDateString());
+		} catch (err: unknown) {
+			console.error("Baseline refresh failed:", err);
+		} finally {
+			setIsRefreshing(false);
+		}
 	}, [baseline, setBaseline]);
 
 	return { refresh, hydrate, isRefreshing, lastRefreshed };

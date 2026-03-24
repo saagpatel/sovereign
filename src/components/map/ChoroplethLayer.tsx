@@ -20,6 +20,13 @@ function interpolateRdYlGn(t: number): string {
 
 const colorScale = scaleDiverging(interpolateRdYlGn).domain([-8, 0, 8]);
 
+const MAP_COLORS = {
+	selected: "#3b82f6",
+	modeledUnset: "#1c1c26",
+	unmodeled: "#111118",
+	border: "#2a2a3a",
+} as const;
+
 export interface CountryFeature {
 	id: string;
 	entityId: string | null;
@@ -57,7 +64,7 @@ export default function ChoroplethLayer({
 
 				let fill: string;
 				if (isSelected) {
-					fill = "#3b82f6";
+					fill = MAP_COLORS.selected;
 				} else if (hasResult && isModeled && f.entityId) {
 					const band = result.confidenceBands[f.entityId];
 					if (band && band.monthly[scrubPosition]) {
@@ -66,12 +73,12 @@ export default function ChoroplethLayer({
 						const delta = p50 - base;
 						fill = colorScale(delta);
 					} else {
-						fill = "#1c1c26";
+						fill = MAP_COLORS.modeledUnset;
 					}
 				} else if (isModeled) {
-					fill = "#1c1c26";
+					fill = MAP_COLORS.modeledUnset;
 				} else {
-					fill = "#111118";
+					fill = MAP_COLORS.unmodeled;
 				}
 
 				return (
@@ -79,7 +86,7 @@ export default function ChoroplethLayer({
 						key={f.id}
 						d={f.path}
 						fill={fill}
-						stroke="#2a2a3a"
+						stroke={MAP_COLORS.border}
 						strokeWidth={0.5}
 						className={
 							isModeled

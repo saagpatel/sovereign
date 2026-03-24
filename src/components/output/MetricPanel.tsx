@@ -14,6 +14,19 @@ import { COUNTRIES } from "@/data/countries";
 import { useSimStore } from "@/store/simStore";
 import type { PolicyDomain, ScalarVariable } from "@/types";
 
+// ─── Chart color tokens ───────────────────────────────────────────────────────
+
+const CHART_COLORS = {
+	accent: "#3b82f6",
+	gridLine: "#2a2a3a",
+	tick: "#71717a",
+	tooltipBg: "#1c1c26",
+	tooltipBorder: "#2a2a3a",
+	tooltipText: "#a1a1aa",
+	tooltipLabel: "#e4e4e7",
+	bandFill: "#1c1c26",
+} as const;
+
 // ─── Display names ───────────────────────────────────────────────────────────
 
 const VAR_DISPLAY_NAMES: Record<ScalarVariable, string> = {
@@ -66,40 +79,40 @@ function MetricChart({ title, data }: MetricChartProps) {
 					margin={{ top: 4, right: 8, bottom: 4, left: 0 }}
 				>
 					<CartesianGrid
-						stroke="#2a2a3a"
+						stroke={CHART_COLORS.gridLine}
 						strokeDasharray="3 3"
 						vertical={false}
 					/>
 					<XAxis
 						dataKey="month"
-						tick={{ fill: "#71717a", fontSize: 10 }}
+						tick={{ fill: CHART_COLORS.tick, fontSize: 10 }}
 						tickLine={false}
 						axisLine={false}
 						label={{
 							value: "Month",
 							position: "insideBottom",
 							offset: -2,
-							fill: "#71717a",
+							fill: CHART_COLORS.tick,
 							fontSize: 10,
 						}}
 						height={28}
 					/>
 					<YAxis
-						tick={{ fill: "#71717a", fontSize: 10 }}
+						tick={{ fill: CHART_COLORS.tick, fontSize: 10 }}
 						tickLine={false}
 						axisLine={false}
 						width={40}
 					/>
 					<Tooltip
 						contentStyle={{
-							backgroundColor: "#1c1c26",
-							border: "1px solid #2a2a3a",
+							backgroundColor: CHART_COLORS.tooltipBg,
+							border: `1px solid ${CHART_COLORS.tooltipBorder}`,
 							borderRadius: "6px",
 							fontSize: 11,
-							color: "#a1a1aa",
+							color: CHART_COLORS.tooltipText,
 						}}
-						itemStyle={{ color: "#a1a1aa" }}
-						labelStyle={{ color: "#e4e4e7" }}
+						itemStyle={{ color: CHART_COLORS.tooltipText }}
+						labelStyle={{ color: CHART_COLORS.tooltipLabel }}
 						formatter={(value: number, name: string) => [
 							value.toFixed(2),
 							name === "p50" ? "Median" : name === "p10" ? "P10" : "P90",
@@ -110,7 +123,7 @@ function MetricChart({ title, data }: MetricChartProps) {
 						type="monotone"
 						dataKey="p90"
 						stroke="transparent"
-						fill="#3b82f6"
+						fill={CHART_COLORS.accent}
 						fillOpacity={0.15}
 						legendType="none"
 						activeDot={false}
@@ -120,7 +133,7 @@ function MetricChart({ title, data }: MetricChartProps) {
 						type="monotone"
 						dataKey="p10"
 						stroke="transparent"
-						fill="#1c1c26"
+						fill={CHART_COLORS.bandFill}
 						fillOpacity={1}
 						legendType="none"
 						activeDot={false}
@@ -130,10 +143,10 @@ function MetricChart({ title, data }: MetricChartProps) {
 					<Line
 						type="monotone"
 						dataKey="p50"
-						stroke="#3b82f6"
+						stroke={CHART_COLORS.accent}
 						strokeWidth={1.5}
 						dot={false}
-						activeDot={{ r: 3, fill: "#3b82f6" }}
+						activeDot={{ r: 3, fill: CHART_COLORS.accent }}
 						isAnimationActive={false}
 					/>
 				</ComposedChart>
