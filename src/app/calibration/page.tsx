@@ -2,10 +2,103 @@
 
 import { useEffect, useState } from "react";
 import { COUNTRIES } from "@/data/countries";
+import { WEIGHT_MATRIX } from "@/data/weights";
 import { useSimulation } from "@/hooks/useSimulation";
+import { runSimulation } from "@/sim/propagation";
+import type { WorldState } from "@/sim/types";
 import { useSimStore } from "@/store/simStore";
 import type { CountryState, PolicyDomain, ScalarVariable } from "@/types";
 import countryDataJson from "../../../public/data/countryData.json";
+
+interface HistoricalTarget {
+	country: string;
+	variable: ScalarVariable;
+	deltaRange: [number, number];
+	byMonth: number;
+}
+
+interface HistoricalScenario {
+	id: string;
+	name: string;
+	scenario: { domain: PolicyDomain; actingCountry: string; magnitude: number };
+	targets: HistoricalTarget[];
+}
+
+const HISTORICAL_SCENARIOS: HistoricalScenario[] = [
+	{
+		id: "us-china-trade-war-2018",
+		name: "US-China Trade War 2018",
+		scenario: { domain: "trade", actingCountry: "USA", magnitude: 65 },
+		targets: [
+			{
+				country: "CHN",
+				variable: "gdpGrowthRate",
+				deltaRange: [-1.5, -0.3],
+				byMonth: 12,
+			},
+			{
+				country: "USA",
+				variable: "inflationRate",
+				deltaRange: [0.2, 0.8],
+				byMonth: 12,
+			},
+			{
+				country: "ASN",
+				variable: "tradeOpenness",
+				deltaRange: [1.0, 4.0],
+				byMonth: 18,
+			},
+		],
+	},
+	{
+		id: "russia-energy-cutoff-2022",
+		name: "Russia Energy Cutoff 2022",
+		scenario: { domain: "energy", actingCountry: "RUS", magnitude: -90 },
+		targets: [
+			{
+				country: "EUR",
+				variable: "gdpGrowthRate",
+				deltaRange: [-4.0, -1.5],
+				byMonth: 6,
+			},
+			{
+				country: "EUR",
+				variable: "inflationRate",
+				deltaRange: [3.0, 6.0],
+				byMonth: 6,
+			},
+		],
+	},
+	{
+		id: "aukus-2021",
+		name: "AUKUS 2021",
+		scenario: { domain: "military", actingCountry: "USA", magnitude: 70 },
+		targets: [
+			{
+				country: "AUS",
+				variable: "militarySpendingPct",
+				deltaRange: [0.2, 0.6],
+				byMonth: 24,
+			},
+			{
+				country: "CHN",
+				variable: "domesticStability",
+				deltaRange: [-3.0, -0.5],
+				byMonth: 12,
+			},
+		],
+	},
+];
+
+interface ComparisonResult {
+	scenarioName: string;
+	country: string;
+	variable: ScalarVariable;
+	byMonth: number;
+	expected: [number, number];
+	actual: number;
+	pass: boolean;
+}
 
 const DOMAINS: PolicyDomain[] = [
 	"trade",
@@ -69,6 +162,10 @@ export default function CalibrationPage() {
 	const [domain, setDomain] = useState<PolicyDomain>("trade");
 	const [magnitude, setMagnitude] = useState(0);
 	const [month, setMonth] = useState(59);
+	const [comparisonResults, setComparisonResults] = useState<
+		ComparisonResult[]
+	>([]);
+	const [isComparing, setIsComparing] = useState(false);
 
 	useEffect(() => {
 		const baselineMap: Record<string, CountryState> = {};
@@ -77,6 +174,45 @@ export default function CalibrationPage() {
 		}
 		setBaseline(baselineMap);
 	}, [setBaseline]);
+
+	const runHistoricalComparison = () => {
+		if (!baseline) return;
+		setIsComparing(true);
+		const results: ComparisonResult[] = [];
+
+		for (const hs of HISTORICAL_SCENARIOS) {
+			const { snapshots } = runSimulation(
+				baseline as WorldState,
+				{
+					domain: hs.scenario.domain,
+					actingCountry: hs.scenario.actingCountry,
+					magnitude: hs.scenario.magnitude,
+					label: hs.name,
+				},
+				WEIGHT_MATRIX,
+				60,
+			);
+
+			for (const target of hs.targets) {
+				const monthIdx = Math.min(target.byMonth - 1, 59);
+				const delta =
+					snapshots[monthIdx]?.deltas[target.country]?.[target.variable] ?? 0;
+				const [lo, hi] = target.deltaRange;
+				results.push({
+					scenarioName: hs.name,
+					country: target.country,
+					variable: target.variable,
+					byMonth: target.byMonth,
+					expected: target.deltaRange,
+					actual: delta,
+					pass: delta >= lo && delta <= hi,
+				});
+			}
+		}
+
+		setComparisonResults(results);
+		setIsComparing(false);
+	};
 
 	const handleRun = () => {
 		setConfig({
@@ -247,6 +383,87 @@ export default function CalibrationPage() {
 						})}
 					</tbody>
 				</table>
+			</section>
+
+			{/* Historical Comparison */}
+			<section className="mt-8 border-t border-surface-700 pt-6">
+				<div className="flex items-center gap-4 mb-4">
+					<h2 className="text-lg font-bold text-zinc-200">
+						Historical Comparison
+					</h2>
+					<button
+						onClick={runHistoricalComparison}
+						disabled={isComparing || !baseline}
+						className="px-3 py-1 bg-surface-800 hover:bg-surface-700 text-zinc-300 text-xs font-bold rounded transition-colors disabled:opacity-50"
+					>
+						{isComparing ? "Running..." : "Run All 3 Scenarios"}
+					</button>
+				</div>
+
+				{comparisonResults.length > 0 && (
+					<table className="w-full text-xs border-collapse">
+						<thead>
+							<tr className="border-b border-surface-700">
+								<th className="text-left py-2 px-2 text-zinc-400 font-light">
+									Scenario
+								</th>
+								<th className="text-left py-2 px-2 text-zinc-400 font-light">
+									Country
+								</th>
+								<th className="text-left py-2 px-2 text-zinc-400 font-light">
+									Variable
+								</th>
+								<th className="text-right py-2 px-2 text-zinc-400 font-light">
+									By Month
+								</th>
+								<th className="text-right py-2 px-2 text-zinc-400 font-light">
+									Expected
+								</th>
+								<th className="text-right py-2 px-2 text-zinc-400 font-light">
+									Actual
+								</th>
+								<th className="text-center py-2 px-2 text-zinc-400 font-light">
+									Status
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{comparisonResults.map((r, i) => (
+								<tr
+									key={`${r.scenarioName}-${r.country}-${r.variable}-${i}`}
+									className="border-b border-surface-800"
+								>
+									<td className="py-1.5 px-2 text-zinc-300">
+										{r.scenarioName}
+									</td>
+									<td className="py-1.5 px-2 font-bold text-zinc-200">
+										{r.country}
+									</td>
+									<td className="py-1.5 px-2 text-zinc-300">
+										{VAR_SHORT_NAMES[r.variable]}
+									</td>
+									<td className="text-right py-1.5 px-2 tabular-nums text-zinc-400">
+										{r.byMonth}
+									</td>
+									<td className="text-right py-1.5 px-2 tabular-nums text-zinc-400">
+										[{r.expected[0]}, {r.expected[1]}]
+									</td>
+									<td className="text-right py-1.5 px-2 tabular-nums text-zinc-200">
+										{r.actual > 0 ? "+" : ""}
+										{r.actual.toFixed(2)}
+									</td>
+									<td className="text-center py-1.5 px-2">
+										<span
+											className={`px-2 py-0.5 rounded text-xs font-bold ${r.pass ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"}`}
+										>
+											{r.pass ? "PASS" : "FAIL"}
+										</span>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				)}
 			</section>
 		</main>
 	);

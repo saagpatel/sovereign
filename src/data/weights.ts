@@ -533,19 +533,19 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 		RUS: {
 			EUR: {
 				gdpGrowthRate: {
-					weight: -0.35,
+					weight: 0.35,
 					delayMonths: 2,
 					mechanism:
 						"European gas dependency on Russia means supply disruptions translate directly into energy-cost shocks and GDP contraction",
 				},
 				inflationRate: {
-					weight: 0.3,
+					weight: -0.3,
 					delayMonths: 1,
 					mechanism:
 						"Russian gas cut-offs cause energy price surges across European consumer and industrial markets, lifting headline inflation",
 				},
 				energyIndependence: {
-					weight: -0.25,
+					weight: 0.25,
 					delayMonths: 3,
 					mechanism:
 						"Supply disruption exposes EU's structural pipeline dependence, reducing measured energy independence",
@@ -553,13 +553,13 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			TUR: {
 				gdpGrowthRate: {
-					weight: -0.15,
+					weight: 0.15,
 					delayMonths: 3,
 					mechanism:
 						"Turkish reliance on Russian gas for heating and industry means supply shocks raise costs and dampen growth",
 				},
 				energyIndependence: {
-					weight: -0.12,
+					weight: 0.12,
 					delayMonths: 2,
 					mechanism:
 						"Russia-Turkey pipeline dependency constrains Turkish energy diversification and lowers independence score",
@@ -586,13 +586,13 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 		SAU: {
 			CHN: {
 				gdpGrowthRate: {
-					weight: -0.2,
+					weight: 0.2,
 					delayMonths: 3,
 					mechanism:
 						"Saudi oil price increases raise Chinese manufacturing and transport energy costs, compressing industrial margins",
 				},
 				inflationRate: {
-					weight: 0.15,
+					weight: -0.15,
 					delayMonths: 2,
 					mechanism:
 						"Higher crude prices from Saudi OPEC+ cuts flow through Chinese fuel and petrochemical prices into consumer inflation",
@@ -600,13 +600,13 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			IND: {
 				gdpGrowthRate: {
-					weight: -0.18,
+					weight: 0.18,
 					delayMonths: 3,
 					mechanism:
 						"India imports ~85% of its crude; Saudi price hikes widen the trade deficit and drag on GDP growth",
 				},
 				inflationRate: {
-					weight: 0.2,
+					weight: -0.2,
 					delayMonths: 2,
 					mechanism:
 						"Elevated crude prices raise fuel subsidies and transport costs across the Indian economy, pushing inflation higher",
@@ -614,13 +614,13 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			JPN: {
 				gdpGrowthRate: {
-					weight: -0.15,
+					weight: 0.15,
 					delayMonths: 3,
 					mechanism:
 						"Japan imports virtually all its oil; Saudi-led price increases compress corporate margins and weigh on GDP",
 				},
 				inflationRate: {
-					weight: 0.12,
+					weight: -0.12,
 					delayMonths: 2,
 					mechanism:
 						"Rising crude prices transmit quickly to Japanese gasoline and utility bills, lifting headline inflation",
@@ -628,13 +628,13 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			KOR: {
 				gdpGrowthRate: {
-					weight: -0.12,
+					weight: 0.12,
 					delayMonths: 3,
 					mechanism:
 						"South Korea's energy-intensive petrochemical and steel industries face margin pressure from higher Saudi crude prices",
 				},
 				inflationRate: {
-					weight: 0.1,
+					weight: -0.1,
 					delayMonths: 2,
 					mechanism:
 						"Saudi OPEC+ production cuts push up Korean fuel and industrial energy prices, boosting inflation",
@@ -642,13 +642,13 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			EUR: {
 				inflationRate: {
-					weight: 0.15,
+					weight: -0.15,
 					delayMonths: 2,
 					mechanism:
 						"European energy markets price in global crude benchmarks; Saudi cuts add inflationary pressure across the bloc",
 				},
 				gdpGrowthRate: {
-					weight: -0.1,
+					weight: 0.1,
 					delayMonths: 4,
 					mechanism:
 						"Higher oil prices increase European import bills, worsen trade balances, and dampen consumer spending and growth",
@@ -656,7 +656,7 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			USA: {
 				inflationRate: {
-					weight: 0.08,
+					weight: -0.08,
 					delayMonths: 2,
 					mechanism:
 						"Even with domestic shale production, global crude price rises pass through to US gasoline and transport costs",
@@ -664,13 +664,13 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			TUR: {
 				inflationRate: {
-					weight: 0.14,
+					weight: -0.14,
 					delayMonths: 2,
 					mechanism:
 						"Turkey's high energy import dependence means Saudi-driven crude increases amplify domestic inflation",
 				},
 				gdpGrowthRate: {
-					weight: -0.1,
+					weight: 0.1,
 					delayMonths: 3,
 					mechanism:
 						"Oil price spikes widen Turkey's current account deficit and tighten financing conditions, slowing growth",
@@ -678,13 +678,13 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			ASN: {
 				inflationRate: {
-					weight: 0.1,
+					weight: -0.1,
 					delayMonths: 2,
 					mechanism:
 						"ASEAN economies with high energy import intensity translate Saudi price moves into domestic fuel and food inflation",
 				},
 				gdpGrowthRate: {
-					weight: -0.08,
+					weight: 0.08,
 					delayMonths: 4,
 					mechanism:
 						"Higher crude prices raise input costs for ASEAN manufacturing hubs, compressing export margins and growth",
@@ -744,7 +744,7 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 		IRN: {
 			SAU: {
 				gdpGrowthRate: {
-					weight: -0.08,
+					weight: 0.08,
 					delayMonths: 3,
 					mechanism:
 						"Iranian disruption of Gulf shipping lanes raises insurance and logistics costs for Saudi exports, reducing revenues",
@@ -752,7 +752,7 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			CHN: {
 				gdpGrowthRate: {
-					weight: -0.06,
+					weight: 0.06,
 					delayMonths: 4,
 					mechanism:
 						"Iranian sanctions reduce discounted oil flows to China, marginally raising Chinese energy import costs",
@@ -760,7 +760,7 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			EUR: {
 				inflationRate: {
-					weight: 0.05,
+					weight: -0.05,
 					delayMonths: 3,
 					mechanism:
 						"Iranian Strait of Hormuz threats raise risk premium on global crude, adding marginal inflationary pressure in Europe",
@@ -768,7 +768,7 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			IND: {
 				gdpGrowthRate: {
-					weight: -0.04,
+					weight: 0.04,
 					delayMonths: 4,
 					mechanism:
 						"Reduction in sanctioned Iranian oil imports forces India to higher-cost alternatives, squeezing growth margins",
@@ -813,7 +813,7 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 		NGA: {
 			EUR: {
 				gdpGrowthRate: {
-					weight: -0.04,
+					weight: 0.04,
 					delayMonths: 5,
 					mechanism:
 						"Nigerian LNG supply disruptions tighten European gas markets, raising input costs and dampening GDP growth",
@@ -821,7 +821,7 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			GBR: {
 				gdpGrowthRate: {
-					weight: -0.03,
+					weight: 0.03,
 					delayMonths: 5,
 					mechanism:
 						"UK relies on Nigerian LNG for part of its gas supply; disruptions add energy cost pressure and weigh on growth",
@@ -1695,7 +1695,7 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 						"Fed rate hikes strengthen dollar, weakening euro purchasing power and raising import costs, pushing eurozone inflation",
 				},
 				gdpGrowthRate: {
-					weight: -0.08,
+					weight: 0.08,
 					delayMonths: 4,
 					mechanism:
 						"Dollar appreciation and capital flight to US Treasuries tighten European financing conditions, dragging on EU GDP",
@@ -1709,7 +1709,7 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 						"Dollar strength reduces yuan purchasing power for commodity imports, raising input costs across Chinese industry",
 				},
 				gdpGrowthRate: {
-					weight: -0.06,
+					weight: 0.06,
 					delayMonths: 5,
 					mechanism:
 						"US monetary tightening reduces global liquidity available to Chinese dollar-denominated debt markets",
@@ -1943,7 +1943,7 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			CHN: {
 				gdpGrowthRate: {
-					weight: -0.04,
+					weight: 0.04,
 					delayMonths: 5,
 					mechanism:
 						"ECB tightening reduces European demand for Chinese goods, marginally reducing Chinese export revenue growth",
@@ -1951,7 +1951,7 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			ASN: {
 				gdpGrowthRate: {
-					weight: -0.03,
+					weight: 0.03,
 					delayMonths: 5,
 					mechanism:
 						"ECB monetary tightening reduces European capital flows to ASEAN emerging markets, raising borrowing costs slightly",
