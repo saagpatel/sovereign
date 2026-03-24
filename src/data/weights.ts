@@ -6,19 +6,19 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 		USA: {
 			CHN: {
 				gdpGrowthRate: {
-					weight: -0.35,
+					weight: -0.065,
 					delayMonths: 3,
 					mechanism:
 						"US tariff escalation reduces Chinese export revenues, contracting industrial output and GDP growth",
 				},
 				tradeOpenness: {
-					weight: -0.4,
+					weight: -0.08,
 					delayMonths: 1,
 					mechanism:
 						"Direct tariff and quota measures close Chinese market access, compressing bilateral trade openness index",
 				},
 				inflationRate: {
-					weight: 0.15,
+					weight: 0.03,
 					delayMonths: 4,
 					mechanism:
 						"Supply-chain disruptions from US decoupling raise input costs for Chinese manufacturers, feeding domestic inflation",
@@ -26,13 +26,13 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			EUR: {
 				gdpGrowthRate: {
-					weight: -0.1,
+					weight: -0.02,
 					delayMonths: 4,
 					mechanism:
 						"US trade restrictions disrupt transatlantic supply chains, dampening European export demand and GDP",
 				},
 				tradeOpenness: {
-					weight: -0.15,
+					weight: -0.03,
 					delayMonths: 2,
 					mechanism:
 						"US non-tariff barriers and sanctions reduce the volume of EU-US bilateral commerce, tightening openness index",
@@ -40,13 +40,13 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			MEX: {
 				tradeOpenness: {
-					weight: 0.3,
+					weight: 0.06,
 					delayMonths: 2,
 					mechanism:
 						"USMCA trade facilitation and nearshoring incentives expand Mexico's trade openness as firms relocate production",
 				},
 				gdpGrowthRate: {
-					weight: 0.2,
+					weight: 0.04,
 					delayMonths: 4,
 					mechanism:
 						"Increased US demand for Mexican manufactured goods and nearshored services lifts Mexican GDP growth",
@@ -54,13 +54,13 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			IND: {
 				gdpGrowthRate: {
-					weight: 0.1,
+					weight: 0.02,
 					delayMonths: 5,
 					mechanism:
 						"US trade diversification away from China redirects sourcing toward India, boosting export-led growth",
 				},
 				tradeOpenness: {
-					weight: 0.12,
+					weight: 0.025,
 					delayMonths: 3,
 					mechanism:
 						"Bilateral trade agreement discussions and preferential access expand India's integration in global trade flows",
@@ -103,13 +103,13 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 		CHN: {
 			USA: {
 				inflationRate: {
-					weight: 0.25,
+					weight: -0.06,
 					delayMonths: 2,
 					mechanism:
 						"Chinese export restrictions and retaliatory tariffs raise US consumer goods prices, lifting inflation",
 				},
 				gdpGrowthRate: {
-					weight: -0.15,
+					weight: -0.03,
 					delayMonths: 4,
 					mechanism:
 						"Disrupted Chinese imports tighten US supply chains, raising costs for downstream industries and slowing GDP",
@@ -117,13 +117,13 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			EUR: {
 				inflationRate: {
-					weight: 0.2,
+					weight: -0.04,
 					delayMonths: 3,
 					mechanism:
 						"Chinese import restrictions and dumping in third markets displace EU exports, while supply shocks raise input costs",
 				},
 				gdpGrowthRate: {
-					weight: -0.12,
+					weight: -0.025,
 					delayMonths: 5,
 					mechanism:
 						"Chinese overcapacity flooding EU markets depresses prices and squeezes margins for European manufacturers",
@@ -131,27 +131,27 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			ASN: {
 				gdpGrowthRate: {
-					weight: -0.25,
+					weight: -0.05,
 					delayMonths: 3,
 					mechanism:
 						"Chinese demand contraction reduces ASEAN commodity and intermediate-goods exports, cutting regional GDP growth",
 				},
 				tradeOpenness: {
-					weight: 0.15,
+					weight: -0.15,
 					delayMonths: 6,
 					mechanism:
-						"China redirects supply chains through ASEAN to circumvent tariffs, increasing ASEAN trade integration over time",
+						"China+1 supply chain redirect increases ASEAN trade integration as firms diversify away from China",
 				},
 			},
 			KOR: {
 				gdpGrowthRate: {
-					weight: -0.3,
+					weight: -0.06,
 					delayMonths: 2,
 					mechanism:
 						"Korea's deep integration in Chinese value chains means Chinese slowdowns rapidly reduce Korean semiconductor and parts exports",
 				},
 				tradeOpenness: {
-					weight: -0.2,
+					weight: -0.04,
 					delayMonths: 3,
 					mechanism:
 						"Chinese trade barriers and technology restrictions compress bilateral trade flows, reducing Korea's openness index",
@@ -159,13 +159,13 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			JPN: {
 				gdpGrowthRate: {
-					weight: -0.2,
+					weight: -0.04,
 					delayMonths: 3,
 					mechanism:
 						"Reduced Chinese demand for Japanese machinery, chemicals and precision equipment cuts export revenues and GDP",
 				},
 				tradeOpenness: {
-					weight: -0.15,
+					weight: -0.03,
 					delayMonths: 4,
 					mechanism:
 						"Chinese trade restrictions and preferential treatment of domestic suppliers reduce Japan's bilateral trade openness",
@@ -173,7 +173,7 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			IND: {
 				gdpGrowthRate: {
-					weight: -0.12,
+					weight: -0.025,
 					delayMonths: 4,
 					mechanism:
 						"Chinese dumping of subsidised goods in Indian markets undercuts domestic industry, weighing on Indian GDP",
@@ -181,13 +181,13 @@ export const WEIGHT_MATRIX: WeightMatrix = {
 			},
 			AUS: {
 				gdpGrowthRate: {
-					weight: -0.18,
+					weight: -0.035,
 					delayMonths: 3,
 					mechanism:
 						"Chinese sanctions and reduced demand for Australian iron ore, coal and agricultural exports contract GDP growth",
 				},
 				tradeOpenness: {
-					weight: -0.15,
+					weight: -0.03,
 					delayMonths: 2,
 					mechanism:
 						"Chinese targeted trade restrictions on Australian commodities and wine directly compress bilateral trade openness",

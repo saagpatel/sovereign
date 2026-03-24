@@ -17,7 +17,7 @@ import type {
 // Constants
 // ---------------------------------------------------------------------------
 
-export const DECAY_FACTOR = 0.85;
+export const DECAY_FACTOR = 0.3;
 export const CAUSAL_EVENT_THRESHOLD = 0.1;
 
 export const VARIABLE_RANGES: Record<ScalarVariable, [number, number]> = {
@@ -85,20 +85,20 @@ export function getShockMapping(
 ): Array<{ variable: ScalarVariable; delta: number }> {
 	switch (domain) {
 		case "trade":
-			return [{ variable: "tradeOpenness", delta: magnitude * 0.3 }];
+			return [{ variable: "tradeOpenness", delta: magnitude * 0.15 }];
 		case "energy":
-			return [{ variable: "energyIndependence", delta: magnitude * 0.2 }];
+			return [{ variable: "energyIndependence", delta: magnitude * 0.1 }];
 		case "military":
-			return [{ variable: "militarySpendingPct", delta: magnitude * 0.04 }];
+			return [{ variable: "militarySpendingPct", delta: magnitude * 0.02 }];
 		case "immigration":
-			return [{ variable: "immigrationRate", delta: magnitude * 0.1 }];
+			return [{ variable: "immigrationRate", delta: magnitude * 0.05 }];
 		case "monetary":
 			return [
-				{ variable: "inflationRate", delta: magnitude * -0.1 },
-				{ variable: "tradeOpenness", delta: magnitude * 0.1 },
+				{ variable: "inflationRate", delta: magnitude * -0.05 },
+				{ variable: "tradeOpenness", delta: magnitude * 0.05 },
 			];
 		case "technology":
-			return [{ variable: "techSelfSufficiency", delta: magnitude * 0.15 }];
+			return [{ variable: "techSelfSufficiency", delta: magnitude * 0.08 }];
 	}
 }
 
