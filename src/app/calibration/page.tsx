@@ -244,8 +244,14 @@ export default function CalibrationPage() {
 			{/* Controls */}
 			<section className="flex items-end gap-4 mb-6 flex-wrap">
 				<div>
-					<label className="block text-xs text-zinc-500 mb-1">Country</label>
+					<label
+						htmlFor="calib-country"
+						className="block text-xs text-zinc-300 mb-1"
+					>
+						Country
+					</label>
 					<select
+						id="calib-country"
 						value={actingCountry}
 						onChange={(e) => setActingCountry(e.target.value)}
 						className="bg-surface-800 border border-surface-700 rounded px-2 py-1.5 text-sm text-zinc-100"
@@ -259,8 +265,14 @@ export default function CalibrationPage() {
 				</div>
 
 				<div>
-					<label className="block text-xs text-zinc-500 mb-1">Domain</label>
+					<label
+						htmlFor="calib-domain"
+						className="block text-xs text-zinc-300 mb-1"
+					>
+						Domain
+					</label>
 					<select
+						id="calib-domain"
 						value={domain}
 						onChange={(e) => setDomain(e.target.value as PolicyDomain)}
 						className="bg-surface-800 border border-surface-700 rounded px-2 py-1.5 text-sm text-zinc-100 capitalize"
@@ -274,11 +286,15 @@ export default function CalibrationPage() {
 				</div>
 
 				<div className="flex-1 max-w-xs">
-					<label className="block text-xs text-zinc-500 mb-1">
+					<label
+						htmlFor="calib-magnitude"
+						className="block text-xs text-zinc-300 mb-1"
+					>
 						Magnitude: {magnitude > 0 ? "+" : ""}
 						{magnitude}
 					</label>
 					<input
+						id="calib-magnitude"
 						type="range"
 						min={-100}
 						max={100}
@@ -286,6 +302,7 @@ export default function CalibrationPage() {
 						value={magnitude}
 						onChange={(e) => setMagnitude(Number(e.target.value))}
 						className="w-full accent-accent"
+						aria-label={`Magnitude: ${magnitude > 0 ? "+" : ""}${magnitude}`}
 					/>
 				</div>
 
@@ -298,7 +315,7 @@ export default function CalibrationPage() {
 				</button>
 
 				{result && (
-					<span className="text-xs text-zinc-500">
+					<span className="text-xs text-zinc-400">
 						{result.runDurationMs.toFixed(0)}ms
 					</span>
 				)}
@@ -307,16 +324,21 @@ export default function CalibrationPage() {
 			{/* Month scrubber */}
 			{result && (
 				<section className="mb-4">
-					<label className="block text-xs text-zinc-500 mb-1">
+					<label
+						htmlFor="calib-month"
+						className="block text-xs text-zinc-300 mb-1"
+					>
 						Month: {month}
 					</label>
 					<input
+						id="calib-month"
 						type="range"
 						min={0}
 						max={59}
 						value={month}
 						onChange={(e) => setMonth(Number(e.target.value))}
 						className="w-full accent-accent"
+						aria-label={`Month: ${month}`}
 					/>
 				</section>
 			)}

@@ -20,7 +20,7 @@ export default function LoadingOverlay() {
 						style={{ width: `${progress}%` }}
 					/>
 				</div>
-				<div className="text-sm text-zinc-400">{progress}%</div>
+				<div className="text-sm text-zinc-300">{progress}%</div>
 			</div>
 		</div>
 	);

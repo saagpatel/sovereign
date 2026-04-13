@@ -43,7 +43,7 @@ export default function TimelineScrubber() {
 		<div className="flex items-center gap-4">
 			<label
 				htmlFor="timeline-scrubber"
-				className="text-sm font-light text-zinc-400 whitespace-nowrap"
+				className="text-sm font-light text-zinc-300 whitespace-nowrap"
 			>
 				Month {scrubPosition}
 			</label>

@@ -27,7 +27,7 @@ export default function CountrySelector() {
 		<div>
 			<label
 				htmlFor="country-select"
-				className="block text-sm font-light text-zinc-400 mb-1"
+				className="block text-sm font-light text-zinc-300 mb-1"
 			>
 				Acting Country
 			</label>

@@ -72,7 +72,7 @@ interface MetricChartProps {
 function MetricChart({ title, data }: MetricChartProps) {
 	return (
 		<div className="flex flex-col gap-2">
-			<p className="text-xs font-light text-zinc-400 tracking-wide">{title}</p>
+			<p className="text-xs font-light text-zinc-300 tracking-wide">{title}</p>
 			<ResponsiveContainer width="100%" height={200}>
 				<ComposedChart
 					data={data}
@@ -164,7 +164,7 @@ export default function MetricPanel() {
 
 	if (!selectedCountry || !result) {
 		return (
-			<div className="flex items-center justify-center h-40 text-zinc-600 text-sm font-light select-none">
+			<div className="flex items-center justify-center h-40 text-zinc-400 text-sm font-light select-none">
 				Select a country to view metrics
 			</div>
 		);
@@ -173,7 +173,7 @@ export default function MetricPanel() {
 	const band = result.confidenceBands[selectedCountry];
 	if (!band) {
 		return (
-			<div className="flex items-center justify-center h-40 text-zinc-600 text-sm font-light select-none">
+			<div className="flex items-center justify-center h-40 text-zinc-400 text-sm font-light select-none">
 				No simulation data for this country
 			</div>
 		);
@@ -207,7 +207,7 @@ export default function MetricPanel() {
 		<div className="flex flex-col gap-4">
 			<div className="flex items-baseline gap-2">
 				<h2 className="text-base font-bold text-zinc-200">{countryName}</h2>
-				<span className="text-xs font-light text-zinc-500">
+				<span className="text-xs font-light text-zinc-400">
 					60-month confidence bands · 50 runs
 				</span>
 			</div>

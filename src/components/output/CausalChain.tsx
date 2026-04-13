@@ -22,7 +22,7 @@ export default function CausalChain() {
 				<span className="text-sm font-bold text-zinc-200">
 					Causal Chain — Top {result.causalChain.length} Events
 				</span>
-				<span className="text-zinc-500 text-xs">
+				<span className="text-zinc-400 text-xs">
 					{expanded ? "collapse" : "expand"}
 				</span>
 			</button>
@@ -37,13 +37,13 @@ export default function CausalChain() {
 								className="px-4 py-2.5 text-sm"
 							>
 								<div className="flex items-center gap-2 mb-1">
-									<span className="text-xs text-zinc-500 tabular-nums w-16">
+									<span className="text-xs text-zinc-400 tabular-nums w-16">
 										Month {event.month}
 									</span>
 									<span className="text-zinc-300 font-bold">
 										{countryName(event.sourceCountry)}
 									</span>
-									<span className="text-zinc-500">&rarr;</span>
+									<span className="text-zinc-400">&rarr;</span>
 									<span className="text-zinc-300 font-bold">
 										{countryName(event.targetCountry)}
 									</span>
@@ -56,7 +56,7 @@ export default function CausalChain() {
 										{event.delta.toFixed(1)}
 									</span>
 								</div>
-								<div className="text-xs text-zinc-500 ml-16">
+								<div className="text-xs text-zinc-400 ml-16">
 									{event.mechanism}
 								</div>
 							</div>

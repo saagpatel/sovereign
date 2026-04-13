@@ -97,7 +97,7 @@ export default function LeverPanel() {
 				<div>
 					<label
 						htmlFor="domain-select"
-						className="block text-sm font-light text-zinc-400 mb-1"
+						className="block text-sm font-light text-zinc-300 mb-1"
 					>
 						Policy Domain
 					</label>
@@ -118,14 +118,15 @@ export default function LeverPanel() {
 				</div>
 
 				<div className="flex-1">
-					<div className="flex justify-between text-sm font-light text-zinc-400 mb-1">
-						<span>Magnitude</span>
+					<div className="flex justify-between text-sm font-light text-zinc-300 mb-1">
+						<label htmlFor="lever-magnitude">Magnitude</label>
 						<span className="font-bold text-zinc-200">
 							{currentMagnitude > 0 ? "+" : ""}
 							{currentMagnitude}
 						</span>
 					</div>
 					<input
+						id="lever-magnitude"
 						type="range"
 						min={-100}
 						max={100}
@@ -135,8 +136,9 @@ export default function LeverPanel() {
 							updateConfig(currentDomain, Number(e.target.value))
 						}
 						className="w-full accent-accent"
+						aria-label={`Policy magnitude: ${currentMagnitude > 0 ? "+" : ""}${currentMagnitude}`}
 					/>
-					<div className="flex justify-between text-xs text-zinc-500 mt-1">
+					<div className="flex justify-between text-xs text-zinc-400 mt-1">
 						<span>{labels["-100"]}</span>
 						<span>{labels["0"]}</span>
 						<span>{labels["100"]}</span>

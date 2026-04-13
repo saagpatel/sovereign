@@ -71,11 +71,11 @@ export default function ScenarioLibrary() {
 							<div className="text-sm font-bold text-zinc-200 mb-1 line-clamp-2">
 								{scenario.title}
 							</div>
-							<div className="text-xs text-zinc-500 mb-1.5">
+							<div className="text-xs text-zinc-400 mb-1.5">
 								{countryName(scenario.lever.actingCountry)}
 							</div>
 							{scenario.historicalAnalog && (
-								<div className="text-xs text-zinc-600 italic">
+								<div className="text-xs text-zinc-400 italic">
 									{scenario.historicalAnalog}
 								</div>
 							)}

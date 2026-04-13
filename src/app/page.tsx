@@ -61,12 +61,12 @@ export default function Home() {
 				</div>
 				<div className="flex items-center gap-3 mt-2">
 					{lastRefreshed && (
-						<span className="text-xs text-zinc-600">Data: {lastRefreshed}</span>
+						<span className="text-xs text-zinc-400">Data: {lastRefreshed}</span>
 					)}
 					<button
 						onClick={refresh}
 						disabled={isRefreshing}
-						className="text-xs px-3 py-1.5 bg-surface-800 hover:bg-surface-700 text-zinc-400 rounded transition-colors disabled:opacity-50"
+						className="text-xs px-3 py-1.5 bg-surface-800 hover:bg-surface-700 text-zinc-300 rounded transition-colors disabled:opacity-50"
 					>
 						{isRefreshing ? "Refreshing..." : "Refresh Baseline"}
 					</button>
@@ -98,7 +98,7 @@ export default function Home() {
 			</section>
 
 			{result && (
-				<p className="text-xs text-zinc-500 mb-6">
+				<p className="text-xs text-zinc-400 mb-6">
 					{config?.runs ?? 1} runs completed in{" "}
 					{result.runDurationMs.toFixed(0)}ms
 				</p>
