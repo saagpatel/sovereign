@@ -1,0 +1,5 @@
+# codex-os-managed
+npm ci
+npm run test:run
+npm run typecheck
+npm run build
