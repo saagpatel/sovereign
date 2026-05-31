@@ -4,7 +4,7 @@
 Sovereign is a client-side geopolitical simulation tool for the web. Users select a country and policy lever, trigger a 50-run Monte Carlo simulation, and explore cascading second and third-order effects across 18 countries/blocs on an interactive D3-geo world map. Built as a research and educational tool — shareable, self-hostable, no backend required.
 
 ## Tech Stack
-- Next.js: 14.x (App Router, `output: 'export'` static build)
+- Next.js: 15.x (App Router, `output: 'export'` static build)
 - React: 18.x (hooks only, no class components)
 - TypeScript: 5.x (strict mode, zero `any`)
 - Tailwind CSS: 3.x
@@ -22,8 +22,8 @@ Sovereign is a client-side geopolitical simulation tool for the web. Users selec
 - Web Worker is the simulation engine — never run Monte Carlo on the main thread
 
 ## Current Phase
-**Phase 0: Foundation**
-See IMPLEMENTATION-ROADMAP.md for full phase details and acceptance criteria.
+**v1 Complete (all 4 phases shipped)**
+See IMPLEMENTATION-ROADMAP.md for full phase history. See docs/PORTFOLIO-DISPOSITION.md for deployment status.
 
 ## Key Decisions
 | Decision | Choice | Why |
@@ -34,7 +34,7 @@ See IMPLEMENTATION-ROADMAP.md for full phase details and acceptance criteria.
 | Map library | D3-geo + TopoJSON | Full SVG control for choropleth + connection lines |
 | State management | Zustand | Minimal boilerplate, Worker-message-friendly |
 | Countries | 18 blocs (see ROADMAP) | Tractable influence graph, all major actors covered |
-| Deployment | Self-hosted nginx static | No Vercel dependency; `out/` dir served directly |
+| Deployment | Vercel (static export) | `vercel.json` + `@vercel/analytics` in place; nginx self-hosting also documented in DEPLOYMENT.md |
 | Baseline data | Hardcoded 2025 + optional WB refresh | Stable default, public API, no keys needed |
 
 ## Do NOT
@@ -55,12 +55,12 @@ Sovereign is a client-side geopolitical simulation tool for the web. Users selec
 
 ## Current State
 
-**Phase 0: Foundation**
-See IMPLEMENTATION-ROADMAP.md for full phase details and acceptance criteria.
+**v1 Complete (all 4 phases shipped)**
+See IMPLEMENTATION-ROADMAP.md for full phase history. See docs/PORTFOLIO-DISPOSITION.md for deployment status.
 
 ## Stack
 
-- Next.js: 14.x (App Router, `output: 'export'` static build)
+- Next.js: 15.x (App Router, `output: 'export'` static build)
 - React: 18.x (hooks only, no class components)
 - TypeScript: 5.x (strict mode, zero `any`)
 - Tailwind CSS: 3.x

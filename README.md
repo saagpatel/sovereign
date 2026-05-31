@@ -9,7 +9,7 @@ Sovereign is a browser-based geopolitical simulation tool. Apply a policy lever 
 ## Features
 
 - **18 countries and blocs** — US, EU, China, Russia, UK, India, Japan, Brazil, and more, each with calibrated baseline economic parameters
-- **10 policy levers** — trade tariffs, military spending, immigration, currency, sanctions, foreign aid, and others
+- **6 policy domains** — trade, energy, military, immigration, monetary, and technology
 - **Monte Carlo engine** — up to 50 simulation passes in a Web Worker via Comlink; no UI blocking
 - **Confidence bands** — p10/p50/p90 bands across GDP growth, inflation, unemployment, trade balance, and 6 other variables
 - **Interactive world map** — D3-geo + TopoJSON globe with country selection and hover tooltips
@@ -23,26 +23,26 @@ Sovereign is a browser-based geopolitical simulation tool. Apply a policy lever 
 
 ### Installation
 ```bash
-npm install
+pnpm install
 ```
 
 ### Usage
 ```bash
 # Development server
-npm run dev
+pnpm dev
 
 # Run tests
-npm test
+pnpm test
 
 # Type-check
-npm run typecheck
+pnpm typecheck
 ```
 
 ## Tech Stack
 
 | Layer | Technology |
 |-------|------------|
-| Framework | Next.js 14 (App Router) |
+| Framework | Next.js 15 (App Router) |
 | Language | TypeScript 5.7 |
 | Simulation | Web Worker via Comlink |
 | State | Zustand |
