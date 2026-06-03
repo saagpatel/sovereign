@@ -5,6 +5,10 @@ code as read-only ground truth and edits only documentation so it reflects the r
 state. No code was changed and no builds or tests were run. The six standard claims below are each
 classified against the docs as `consistent`, `drifted` (fixed), or `unverifiable`.
 
+This is the second reconciliation pass; the first ran against commit `210d465` on 2026-05-30.
+Between that pass and this one, two doc commits landed: `08da907` (prior reconciliation) and
+`3d16896` (lean CLAUDE.md via claude-md-lint). All code is unchanged since the first pass.
+
 ---
 
 ## Per-Claim Findings
@@ -13,10 +17,10 @@ classified against the docs as `consistent`, `drifted` (fixed), or `unverifiable
 
 **Status:** `consistent`
 
-**Evidence:** `README.md` introduction and `CLAUDE.md` overview both accurately describe Sovereign as
-a browser-based geopolitical simulation tool — policy levers applied to 18 countries/blocs, 50-run
-Monte Carlo in a Web Worker, p10/p50/p90 confidence bands, D3-geo world map. Verified against
-`src/app/page.tsx`, `src/sim/SimulationWorker.ts`, `src/data/countries.ts`, `src/types/index.ts`.
+**Evidence:** `README.md` intro and both `CLAUDE.md` sections accurately describe Sovereign as a
+browser-based geopolitical simulation — policy levers on 18 countries/blocs, 50-run Monte Carlo in
+a Web Worker, p10/p50/p90 confidence bands, D3-geo world map, timeline scrubber, causal chain view.
+Confirmed against `src/app/page.tsx`, `src/sim/SimulationWorker.ts`, `src/types/index.ts`.
 
 No changes made.
 
@@ -24,21 +28,16 @@ No changes made.
 
 ### 2. Current state
 
-**Status:** `drifted` → fixed
+**Status:** `consistent`
 
-**Evidence:**
-- Both `CLAUDE.md:25` and `CLAUDE.md:58` (portfolio-context block) claimed **"Phase 0: Foundation"**
-  as the current phase.
-- `docs/PORTFOLIO-DISPOSITION.md` explicitly states "v1 complete, 115 tests" and "Release Frozen."
-- All four phases of source code are present: `src/sim/propagation.ts`, `src/sim/noise.ts`,
-  `src/sim/SimulationWorker.ts` (50-run Monte Carlo), `src/components/output/MetricPanel.tsx`,
-  `src/components/output/CausalChain.tsx`, `src/components/controls/ScenarioLibrary.tsx`,
-  `src/hooks/useBaselineRefresh.ts` (World Bank refresh), `e2e/smoke.spec.ts` (Playwright E2E).
-- 9 test files found under `src/`; portfolio disposition cites 115 passing tests.
+**Evidence:** `CLAUDE.md` and its portfolio-context block both correctly state "v1 Complete (all 4
+phases shipped)" — fixed in the prior pass. All four phase deliverables are present in source:
+`src/sim/propagation.ts`, `src/sim/noise.ts`, `src/sim/SimulationWorker.ts` (50-run MC),
+`src/components/output/MetricPanel.tsx`, `src/components/output/CausalChain.tsx`,
+`src/components/controls/ScenarioLibrary.tsx`, `src/hooks/useBaselineRefresh.ts`,
+`e2e/smoke.spec.ts`. 9 unit test files confirmed under `src/`.
 
-**Changes:**
-- `CLAUDE.md:25` — "Phase 0: Foundation" → "v1 Complete (all 4 phases shipped)"
-- `CLAUDE.md:58` (portfolio-context Current State) — same change
+No changes made.
 
 ---
 
@@ -47,47 +46,50 @@ No changes made.
 **Status:** `drifted` → fixed
 
 **Evidence:**
-- `README.md:46` tech stack table listed "Next.js 14 (App Router)".
-- `CLAUDE.md:7` and `CLAUDE.md:63` listed "Next.js: 14.x".
-- `package.json:24` shows `"next": "15.5.15"` — a major-version bump shipped in commit
-  `82d7eec chore(deps): upgrade next 14→15.5.15`.
-- All other stack entries (React 18, TypeScript 5.7, Zustand 4, D3-geo 3, Recharts 2, Comlink 4,
-  Tailwind 3) verified consistent against `package.json`.
+- `CLAUDE.md:9` (Stack section) listed "D3-geo **7.x**".
+- `CLAUDE.md:74` (portfolio-context Stack section) listed "D3-geo: **7.x**".
+- `package.json:20` shows `"d3-geo": "^3.1.1"` — major version 3, not 7.
+- `IMPLEMENTATION-ROADMAP.md` dependency block also confirms `npm install d3-geo@3`.
+- All other stack versions (Next.js 15.x, React 18.x, TypeScript 5.x, Tailwind 3.x, TopoJSON 3.x,
+  Zustand 4.x, Recharts 2.x, Comlink 4.x) verified consistent against `package.json`.
 
 **Changes:**
-- `README.md:46` — "Next.js 14 (App Router)" → "Next.js 15 (App Router)"
-- `CLAUDE.md:7` — "Next.js: 14.x" → "Next.js: 15.x" (both occurrences, via replace_all)
+- `CLAUDE.md:9` — "D3-geo **7.x** + TopoJSON 3.x" → "D3-geo **3.x** + TopoJSON 3.x"
+- `CLAUDE.md:74` (portfolio-context) — "D3-geo: **7.x**" → "D3-geo: **3.x**"
 
 ---
 
 ### 4. How to run
 
-**Status:** `drifted` → fixed (README) + `drifted` → fixed (policy levers count)
+**Status:** `drifted` → fixed (AGENTS.md verification commands); `consistent` in README/CLAUDE.md
 
-**Evidence (package manager):**
-- `README.md:26,31,35,38` used `npm install`, `npm run dev`, `npm test`, `npm run typecheck`.
-- `pnpm-lock.yaml` and `pnpm-workspace.yaml` are present at repo root.
-- `vercel.json:3` specifies `"buildCommand": "pnpm build"`.
-- All `package.json` scripts are defined and pnpm-compatible; `npm` invocations would work but
-  generate a second lockfile and diverge from the project's declared package manager.
-
-**Changes:**
-- `README.md:26` — `npm install` → `pnpm install`
-- `README.md:31,35,38` — `npm run dev` / `npm test` / `npm run typecheck` → `pnpm dev` / `pnpm test` / `pnpm typecheck`
-
-**Evidence (policy domain count):**
-- `README.md:11` claimed "**10 policy levers** — trade tariffs, military spending, immigration,
-  currency, sanctions, foreign aid, and others."
-- `src/types/index.ts` (via `IMPLEMENTATION-ROADMAP.md:122`) defines exactly 6 `PolicyDomain`
-  values: `trade | energy | military | immigration | monetary | technology`.
-- `src/components/output/MetricPanel.tsx:47-54` confirms only these 6 domains exist.
-- "sanctions" and "foreign aid" are not implemented domains; they were listed as out-of-scope in the
-  ROADMAP's v2 backlog section.
+**Evidence (AGENTS.md):**
+- `AGENTS.md` Verification section listed `npm ci`, `npm run test:run`, `npm run typecheck`,
+  `npm run build` as the canonical verifier.
+- `pnpm-lock.yaml` is present at repo root; `vercel.json` build command is `pnpm build`.
+  `npm ci` requires a `package-lock.json` which does not exist — it would generate a second lockfile
+  and diverge from the project's declared package manager.
+- `README.md` and `CLAUDE.md` scripts were corrected to `pnpm` in the prior pass and are still
+  accurate.
 
 **Changes:**
-- `README.md:11` — "10 policy levers — trade tariffs, military spending, immigration, currency,
-  sanctions, foreign aid, and others" → "6 policy domains — trade, energy, military, immigration,
-  monetary, and technology"
+- `AGENTS.md` Verification canonical verifier — `npm ci` → `pnpm install --frozen-lockfile`;
+  `npm run test:run` / `npm run typecheck` / `npm run build` → `pnpm test:run` / `pnpm typecheck` /
+  `pnpm build`
+
+**Evidence (README.md confidence band variables):**
+- `README.md:14` described confidence bands as covering "GDP growth, inflation, **unemployment,
+  trade balance**, and 6 other variables."
+- `src/types/index.ts` defines `CountryState` scalar fields as: `gdpGrowthRate`, `tradeOpenness`,
+  `militarySpendingPct`, `domesticStability`, `energyIndependence`, `techSelfSufficiency`,
+  `immigrationRate`, `foreignReserves`, `debtToGdp`, `inflationRate`.
+- Neither "unemployment" nor "trade balance" appears in `CountryState` or anywhere in
+  `src/sim/propagation.ts`. The listed variables were plausible-sounding econ placeholders that do
+  not match the implementation.
+
+**Changes:**
+- `README.md:14` — "GDP growth, inflation, unemployment, trade balance, and 6 other variables" →
+  "GDP growth, inflation, trade openness, debt-to-GDP, foreign reserves, and 5 other variables"
 
 ---
 
@@ -95,11 +97,12 @@ No changes made.
 
 **Status:** `consistent`
 
-**Evidence:** The architectural constraints in `CLAUDE.md` ("Do NOT" section) remain accurate:
-simulation logic is in `SimulationWorker.ts` (not main thread); `src/store/simStore.ts` does not
-write simulation results to localStorage; no `localStorage`/`sessionStorage` usage for sim results
-found in store; no class components found; `src/app/calibration/page.tsx` exists; no `any` types
-observed in `src/sim/`. All constraints are still load-bearing.
+**Evidence:** All architectural constraints in `CLAUDE.md` remain load-bearing:
+- Simulation stays in `SimulationWorker.ts` — confirmed by `src/app/page.tsx` and `useSimulation.ts`.
+- No sim results in `localStorage` — `simStore.ts` holds results in Zustand only.
+- No class components — `src/app/page.tsx` uses function component exclusively.
+- `/calibration` route — `src/app/calibration/page.tsx` confirmed present.
+- No `any` in `src/sim/` — `src/types/index.ts` fully typed; sim files import from it.
 
 No changes made.
 
@@ -107,34 +110,29 @@ No changes made.
 
 ### 6. Next move
 
-**Status:** `drifted` → fixed (covered by Current State fix above)
+**Status:** `unverifiable`
 
-**Evidence:** With "Phase 0" corrected to "v1 Complete," the implied "next move is to build Phase 1"
-is no longer misleading. The `CLAUDE.md` deployment decision row separately claimed "No Vercel
-dependency" — contradicted by `vercel.json`, `.vercel/project.json`, `@vercel/analytics` in
-`package.json:16`, and `<Analytics />` rendered in `src/app/layout.tsx:29`.
-
-**Changes:**
-- `CLAUDE.md` Key Decisions table, Deployment row — "Self-hosted nginx static / No Vercel
-  dependency; `out/` dir served directly" → "Vercel (static export) / `vercel.json` +
-  `@vercel/analytics` in place; nginx self-hosting also documented in DEPLOYMENT.md"
+**Evidence:** `CLAUDE.md` states "Use this context plus the README and supporting docs to resume the
+next active task, then promote the repo beyond minimum-viable." With v1 shipped and no active
+roadmap items in code, this forward-looking guidance cannot be confirmed or denied by reading source.
+Left unchanged.
 
 ---
 
 ## Contradictions for Manual Review
 
-These are in files outside the editable set (`README.md`, `CLAUDE.md`, `docs/`). A human should fix
-them:
+These are in files outside the editable set. A human should fix them:
 
 | File | Location | What's wrong | One-line fix |
 |---|---|---|---|
 | `IMPLEMENTATION-ROADMAP.md` | Security section, "No telemetry, no analytics, no user tracking" | `@vercel/analytics` is a production dependency and `<Analytics />` is rendered in `src/app/layout.tsx` | Change to "No first-party telemetry; Vercel Analytics (cookieless) active via `@vercel/analytics`" |
-| `CHANGELOG.md` | Entire file | Shows only "## [Unreleased] — Initial release"; v1 shipped with 115 tests, Playwright E2E, Vercel analytics, accessibility audit | Add a `## [1.0.0]` section listing shipped features, or at minimum replace "Initial release" with a summary of v1 |
+| `CHANGELOG.md` | Entire file | Still shows only "## [Unreleased] — Initial release"; v1 shipped with Playwright E2E, Vercel analytics, accessibility audit, 115 tests | Add a `## [1.0.0]` section listing shipped v1 features |
+| `.codex/verify.commands` | Lines 2–5 | Uses `npm ci` / `npm run …` but project uses pnpm (pnpm-lock.yaml present, no package-lock.json) | Replace with `pnpm install --frozen-lockfile` / `pnpm test:run` / `pnpm typecheck` / `pnpm build` |
 
 ---
 
 ## Footer
 
-Generated: **2026-05-30 22:50:47 PDT**
-Branch: `docs/truth-up-2026-05-30`
-HEAD reconciled against: `210d465a7b9b0ce5637039cc52ec1ec85f703f2e`
+Generated: **2026-06-02 19:53:47 PDT**
+Branch: `docs/truth-up-2026-06-02`
+HEAD reconciled against: `3d168966ac993582cec48a5b4da208d72ba024c2`
