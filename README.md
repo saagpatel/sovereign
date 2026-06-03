@@ -11,7 +11,7 @@ Sovereign is a browser-based geopolitical simulation tool. Apply a policy lever 
 - **18 countries and blocs** — US, EU, China, Russia, UK, India, Japan, Brazil, and more, each with calibrated baseline economic parameters
 - **6 policy domains** — trade, energy, military, immigration, monetary, and technology
 - **Monte Carlo engine** — up to 50 simulation passes in a Web Worker via Comlink; no UI blocking
-- **Confidence bands** — p10/p50/p90 bands across GDP growth, inflation, unemployment, trade balance, and 6 other variables
+- **Confidence bands** — p10/p50/p90 bands across GDP growth, inflation, trade openness, debt-to-GDP, foreign reserves, and 5 other variables
 - **Interactive world map** — D3-geo + TopoJSON globe with country selection and hover tooltips
 - **Timeline scrubber** — step through any of the 60 months to see the state at that moment
 - **Causal chain view** — top-10 ranked causal links explaining how your policy propagated

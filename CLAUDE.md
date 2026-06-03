@@ -8,7 +8,7 @@ Client-side geopolitical simulation: select a country + policy lever, run a 50-r
 - React 18.x — hooks only
 - TypeScript 5.x — strict mode, zero `any`
 - Tailwind CSS 3.x
-- D3-geo 7.x + TopoJSON 3.x — choropleth + connection lines
+- D3-geo 3.x + TopoJSON 3.x — choropleth + connection lines
 - Zustand 4.x — global state
 - Recharts 2.x — confidence band charts
 - Comlink 4.x — type-safe Web Worker RPC
@@ -74,7 +74,7 @@ See IMPLEMENTATION-ROADMAP.md for full phase history. See docs/PORTFOLIO-DISPOSI
 - React: 18.x (hooks only, no class components)
 - TypeScript: 5.x (strict mode, zero `any`)
 - Tailwind CSS: 3.x
-- D3-geo: 7.x + TopoJSON 3.x — world map, choropleth, connection lines
+- D3-geo: 3.x + TopoJSON 3.x — world map, choropleth, connection lines
 - Zustand: 4.x — global state management
 - Recharts: 2.x — confidence band charts
 - Comlink: 4.x — type-safe Web Worker RPC
