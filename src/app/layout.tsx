@@ -10,9 +10,26 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
+	metadataBase: new URL("https://sovereign-sim.vercel.app"),
 	title: "Sovereign",
 	description:
 		"Geopolitical simulation tool — explore cascading effects of policy decisions across 18 countries",
+	openGraph: {
+		title: "Sovereign — Geopolitical Simulation",
+		description:
+			"Explore the cascading effects of policy decisions rippling across 18 interconnected nations.",
+		url: "https://sovereign-sim.vercel.app",
+		siteName: "Sovereign",
+		images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+		type: "website",
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "Sovereign — Geopolitical Simulation",
+		description:
+			"Explore the cascading effects of policy decisions rippling across 18 interconnected nations.",
+		images: ["/og-image.png"],
+	},
 };
 
 export default function RootLayout({
