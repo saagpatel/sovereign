@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Sovereign">
+  <rect width="64" height="64" rx="13" fill="#0c1118"/>
+  <circle cx="32" cy="32" r="18" fill="#13233a"/>
+  <g fill="none" stroke="#4a90d9" stroke-width="1.5">
+    <circle cx="32" cy="32" r="18"/>
+    <ellipse cx="32" cy="32" rx="8" ry="18" opacity="0.75"/>
+    <line x1="14" y1="32" x2="50" y2="32" opacity="0.75"/>
+    <line x1="17.5" y1="21" x2="46.5" y2="21" opacity="0.5"/>
+    <line x1="17.5" y1="43" x2="46.5" y2="43" opacity="0.5"/>
+  </g>
+</svg>
