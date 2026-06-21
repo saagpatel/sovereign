@@ -5,8 +5,7 @@ set -euo pipefail
 max_bytes="${GIT_GUARD_MAX_BYTES:-2097152}"
 fail=0
 while IFS= read -r file; do
-  [[ -f "$file" ]] || continue
-  size=$(wc -c <"$file")
+  size=$(git cat-file -s ":$file")
   if (( size > max_bytes )); then
     echo "Large file staged (>${max_bytes} bytes): $file"
     fail=1
