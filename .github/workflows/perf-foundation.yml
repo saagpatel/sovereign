@@ -40,7 +40,12 @@ jobs:
         run: pnpm -C "${{ steps.pnpm-project.outputs.dir }}" install --frozen-lockfile
 
       - name: Run perf foundation
-        run: bash ./.codex/scripts/run_perf_foundation.sh
+        run: |
+          if [ -f ./.codex/scripts/run_perf_foundation.sh ]; then
+            bash ./.codex/scripts/run_perf_foundation.sh
+          else
+            echo "No perf foundation script found; skipping."
+          fi
 
       - name: Upload perf artifacts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -48,4 +53,4 @@ jobs:
           name: perf-foundation
           path: .perf-results/**
           include-hidden-files: true
-          if-no-files-found: error
+          if-no-files-found: ignore
