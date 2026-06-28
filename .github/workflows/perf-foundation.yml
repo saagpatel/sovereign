@@ -22,11 +22,22 @@ jobs:
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
         with:
           node-version: 22
-          cache: pnpm
-          cache-dependency-path: ui/pnpm-lock.yaml
 
-      - name: Install UI dependencies
-        run: pnpm -C ui install --frozen-lockfile
+      - name: Detect pnpm project
+        id: pnpm-project
+        shell: bash
+        run: |
+          for dir in ui client app web frontend .; do
+            if [ -f "$dir/pnpm-lock.yaml" ]; then
+              echo "dir=$dir" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          done
+          echo "dir=" >> "$GITHUB_OUTPUT"
+
+      - name: Install pnpm dependencies
+        if: steps.pnpm-project.outputs.dir != ''
+        run: pnpm -C "${{ steps.pnpm-project.outputs.dir }}" install --frozen-lockfile
 
       - name: Run perf foundation
         run: bash ./.codex/scripts/run_perf_foundation.sh
