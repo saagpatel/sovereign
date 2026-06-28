@@ -13,7 +13,32 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup pnpm
+      - name: Detect pnpm project
+        id: pnpm-project
+        shell: bash
+        run: |
+          for dir in ui client app web frontend .; do
+            if [ -f "$dir/pnpm-lock.yaml" ]; then
+              echo "dir=$dir" >> "$GITHUB_OUTPUT"
+              if [ -f "$dir/package.json" ] && node -e 'const pkg=require(process.argv[1]); process.exit(String(pkg.packageManager || "").startsWith("pnpm@") ? 0 : 1)' "$dir/package.json"; then
+                echo "has_package_manager=true" >> "$GITHUB_OUTPUT"
+              else
+                echo "has_package_manager=false" >> "$GITHUB_OUTPUT"
+              fi
+              exit 0
+            fi
+          done
+          echo "dir=" >> "$GITHUB_OUTPUT"
+          echo "has_package_manager=false" >> "$GITHUB_OUTPUT"
+
+      - name: Setup pnpm from packageManager
+        if: steps.pnpm-project.outputs.dir != '' && steps.pnpm-project.outputs.has_package_manager == 'true'
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+        with:
+          package_json_file: ${{ steps.pnpm-project.outputs.dir }}/package.json
+
+      - name: Setup pinned pnpm fallback
+        if: steps.pnpm-project.outputs.dir != '' && steps.pnpm-project.outputs.has_package_manager != 'true'
         uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: 11.5.2
@@ -22,18 +47,6 @@ jobs:
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
         with:
           node-version: 22
-
-      - name: Detect pnpm project
-        id: pnpm-project
-        shell: bash
-        run: |
-          for dir in ui client app web frontend .; do
-            if [ -f "$dir/pnpm-lock.yaml" ]; then
-              echo "dir=$dir" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-          done
-          echo "dir=" >> "$GITHUB_OUTPUT"
 
       - name: Install pnpm dependencies
         if: steps.pnpm-project.outputs.dir != ''
