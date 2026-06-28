@@ -1,0 +1,38 @@
+name: perf-foundation
+
+on:
+  workflow_call:
+
+jobs:
+  perf-foundation:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+
+      - name: Setup Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install UI dependencies
+        run: pnpm -C ui install --frozen-lockfile
+
+      - name: Run perf foundation
+        run: bash ./.codex/scripts/run_perf_foundation.sh
+
+      - name: Upload perf artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: perf-foundation
+          path: .perf-results/**
+          include-hidden-files: true
+          if-no-files-found: error
