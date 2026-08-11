@@ -14,6 +14,16 @@ overrides:
   # only and has no runtime API surface to break.
   ws: ">=8.21.0"
 
+  # sharp arrives only as next's optional image-optimization dependency, and
+  # this app is output: "export", so there is no server to run that pipeline
+  # and no reachable call into libvips. The advisory is still worth clearing
+  # rather than carrying: < 0.35.0 inherits CVE-2026-33327/33328/35573.
+  # next@15 declares ^0.34.3 and only next@16.3 moved to ^0.35.3, so this lifts
+  # past next's declared range deliberately. Safe here precisely because the
+  # dependency is unused at runtime; revisit if image optimization is ever
+  # enabled, and drop this line once the project is on next >= 16.3.
+  sharp: ">=0.35.3"
+
   # brace-expansion is scoped to one path on purpose. The tree carries two
   # copies: 1.1.15 under minimatch@3, which is the vulnerable one, and 5.0.7
   # under minimatch@10, which is already fixed. An unscoped range collapses both
