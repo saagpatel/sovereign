@@ -25,3 +25,8 @@ jobs:
       # noticing, because nothing here ran the build. Typecheck and tests both
       # passed throughout: neither one compiles the CSS.
       - run: pnpm build
+      # Same failure shape, different signal: a high-severity advisory sat on
+      # the default branch with nothing here to surface it, so it was only ever
+      # visible to whoever happened to read a push warning. Runs last on
+      # purpose, so a vulnerability cannot mask a real test or build failure.
+      - run: pnpm audit --audit-level high

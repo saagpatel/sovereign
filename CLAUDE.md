@@ -5,12 +5,12 @@ Client-side geopolitical simulation: select a country + policy lever, run a 50-r
 ## Stack
 
 - Next.js 15.x — App Router, `output: 'export'` static build
-- React 18.x — hooks only
-- TypeScript 5.x — strict mode, zero `any`
-- Tailwind CSS 3.x
+- React 19.x — hooks only
+- TypeScript 6.x — strict mode, zero `any`
+- Tailwind CSS 4.x
 - D3-geo 3.x + TopoJSON 3.x — choropleth + connection lines
-- Zustand 4.x — global state
-- Recharts 2.x — confidence band charts
+- Zustand 5.x — global state
+- Recharts 3.x — confidence band charts
 - Comlink 4.x — type-safe Web Worker RPC
 
 ## Build / Test / Run
@@ -71,12 +71,12 @@ See IMPLEMENTATION-ROADMAP.md for full phase history. See docs/PORTFOLIO-DISPOSI
 ## Stack
 
 - Next.js: 15.x (App Router, `output: 'export'` static build)
-- React: 18.x (hooks only, no class components)
-- TypeScript: 5.x (strict mode, zero `any`)
-- Tailwind CSS: 3.x
+- React: 19.x (hooks only, no class components)
+- TypeScript: 6.x (strict mode, zero `any`)
+- Tailwind CSS: 4.x
 - D3-geo: 3.x + TopoJSON 3.x — world map, choropleth, connection lines
-- Zustand: 4.x — global state management
-- Recharts: 2.x — confidence band charts
+- Zustand: 5.x — global state management
+- Recharts: 3.x — confidence band charts
 - Comlink: 4.x — type-safe Web Worker RPC
 
 ## How To Run
