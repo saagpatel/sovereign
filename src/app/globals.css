@@ -1,6 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind 4 replaced the three @tailwind directives with a single import. The
+   JS config is not picked up automatically any more, so it is referenced
+   explicitly rather than being ported to CSS: the theme it defines is the
+   site's palette, and moving it is a separate change from unbreaking the
+   build. */
+@import "tailwindcss";
+@config "../../tailwind.config.js";
 
 @layer base {
 	:root {
