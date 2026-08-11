@@ -1,7 +1,10 @@
 name: Test (Node)
 on:
   push:
-    branches: [main, 'feat/**']
+    # Every branch shape scripts/git/guard-branch.sh accepts. Previously this
+    # watched only main and feat/**, so a branch named fix/... or chore/... got
+    # no CI on push at all, which is indistinguishable from CI passing.
+    branches: [main, 'feat/**', 'fix/**', 'chore/**', 'refactor/**', 'codex/**', 'cc/**']
   pull_request:
     branches: [main]
 
@@ -18,3 +21,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm tsc --noEmit
       - run: pnpm test
+      # The default branch was unbuildable for a month without anything
+      # noticing, because nothing here ran the build. Typecheck and tests both
+      # passed throughout: neither one compiles the CSS.
+      - run: pnpm build

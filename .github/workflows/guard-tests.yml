@@ -7,7 +7,9 @@ name: guard-tests
 # shipping to ~50 repositories.
 on:
   push:
-    branches: [main, 'codex/**', 'feat/**']
+    # Every branch shape guard-branch.sh accepts, so a name this repo blesses is
+    # a name CI actually watches.
+    branches: [main, 'feat/**', 'fix/**', 'chore/**', 'refactor/**', 'codex/**', 'cc/**']
   pull_request:
     branches: [main]
   workflow_call:
