@@ -71,8 +71,17 @@ check "a clean scan is allowed"               allowed 0
 echo "  -- with no scanner --"
 check "outside CI it fails closed"            REFUSED none
 check "CI=true skips"                         allowed none CI=true
-check "CI set to anything skips"              allowed none CI=1
 check "GITHUB_ACTIONS=true skips"             allowed none GITHUB_ACTIONS=true
+
+# The escape hatch keys on the exact value "true", not on the variable merely
+# being set. Every system that reaches this branch for real (GitHub Actions,
+# GitLab CI) sets exactly "true", while a developer who exports CI for unrelated
+# tooling, or anything that sets it to a falsey string, would otherwise turn the
+# only local secret check off without meaning to.
+echo "  -- the escape hatch needs the value, not just the variable --"
+check "CI=1 does not skip"                    REFUSED none CI=1
+check "CI=false does not skip"                REFUSED none CI=false
+check "GITHUB_ACTIONS=false does not skip"    REFUSED none GITHUB_ACTIONS=false
 
 echo "  -- the scanner still decides inside CI --"
 check "finding in CI is still refused"        REFUSED 1 CI=true

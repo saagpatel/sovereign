@@ -66,8 +66,17 @@ while IFS= read -r -d '' git_dir; do
     for canonical_test in "$CANONICAL_DIR"/tests/*; do
         [[ -f "$canonical_test" ]] || continue
         test_name="$(basename "$canonical_test")"
+        # A test need not share its subject's extension: the suite for
+        # propose-commit-message.mjs is a .sh file. Pairing on the exact
+        # filename delivered that one to nobody, and a test that is never
+        # delivered reads exactly like a test that passes.
         covered="${test_name#test-}"
-        [[ -f "$git_dir/$covered" ]] || continue
+        covered="${covered%.*}"
+        subject=""
+        for candidate in "$git_dir/$covered" "$git_dir/$covered".*; do
+            [[ -f "$candidate" ]] && { subject="$candidate"; break; }
+        done
+        [[ -n "$subject" ]] || continue
         sync_one "$canonical_test" "$git_dir/tests/$test_name" \
             "$repo_name/scripts/git/tests/$test_name"
     done
