@@ -32,9 +32,12 @@ jobs:
         run: |
           set -uo pipefail
           shopt -s nullglob
-          tests=(scripts/git/tests/*.sh)
+          # scripts/git/tests covers the guards themselves; scripts/tests
+          # covers the tooling around them, including sync.sh, which writes
+          # into every consumer repository.
+          tests=(scripts/git/tests/*.sh scripts/tests/*.sh)
           if (( ${#tests[@]} == 0 )); then
-            echo "::error::No guard tests found. Expected scripts/git/tests/*.sh"
+            echo "::error::No tests found. Expected scripts/git/tests/*.sh or scripts/tests/*.sh"
             exit 1
           fi
 
