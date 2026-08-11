@@ -1,0 +1,54 @@
+name: guard-tests
+
+# The guard scripts in scripts/git are copied into every consumer repo by
+# scripts/sync.sh, so a defect here propagates. Until now nothing ran their
+# tests; they only passed when someone ran them by hand. This runs them on
+# every push and pull request so a regression fails loudly instead of quietly
+# shipping to ~50 repositories.
+on:
+  push:
+    branches: [main, 'codex/**', 'feat/**']
+  pull_request:
+    branches: [main]
+  workflow_call:
+
+jobs:
+  guard-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+
+      # The guards shell out to git, and several tests build throwaway repos.
+      # A missing global identity makes those commits fail in ways that read
+      # as guard failures, so set one explicitly rather than rely on the runner.
+      - name: Configure a git identity for the throwaway repos
+        run: |
+          git config --global user.email ci@example.com
+          git config --global user.name CI
+
+      - name: Run every guard test
+        run: |
+          set -uo pipefail
+          shopt -s nullglob
+          tests=(scripts/git/tests/*.sh)
+          if (( ${#tests[@]} == 0 )); then
+            echo "::error::No guard tests found. Expected scripts/git/tests/*.sh"
+            exit 1
+          fi
+
+          failures=0
+          for t in "${tests[@]}"; do
+            echo "::group::$t"
+            if bash "$t"; then
+              echo "::endgroup::"
+            else
+              echo "::endgroup::"
+              echo "::error file=$t::$t failed"
+              failures=$((failures + 1))
+            fi
+          done
+
+          echo "ran ${#tests[@]} test file(s), $failures failing"
+          exit $(( failures > 0 ? 1 : 0 ))
