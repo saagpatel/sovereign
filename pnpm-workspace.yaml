@@ -2,7 +2,21 @@ allowBuilds:
   sharp: true
   unrs-resolver: true
 overrides:
+  # Ranges, not exact pins. An override is meant to be a floor, and an exact pin
+  # quietly turns it into a ceiling that holds a package back long after the
+  # advisory it was added for is fixed. vite below is already in that state.
   form-data: ^4.0.6
   lodash: ">=4.18.1"
   postcss: ^8.5.16
   vite: 8.0.16
+
+  # ws reaches the tree only through jsdom and vitest, so this is test-time
+  # only and has no runtime API surface to break.
+  ws: ">=8.21.0"
+
+  # brace-expansion is scoped to one path on purpose. The tree carries two
+  # copies: 1.1.15 under minimatch@3, which is the vulnerable one, and 5.0.7
+  # under minimatch@10, which is already fixed. An unscoped range collapses both
+  # onto 5.x, which forces a major on a consumer that asks for ^1.1.7. The fix
+  # exists inside 1.x, so lift only the copy that needs lifting.
+  minimatch@3>brace-expansion: ">=1.1.16 <2"
