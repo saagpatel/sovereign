@@ -32,6 +32,11 @@ build_canonical() {
   chmod +x "$root/sovereign/scripts/git/guard-alpha.sh" "$root/sovereign/scripts/git/guard-beta.sh"
   printf '#!/usr/bin/env bash\nexit 0\n' > "$root/sovereign/scripts/git/tests/test-guard-alpha.sh"
   printf '#!/usr/bin/env bash\nexit 0\n' > "$root/sovereign/scripts/git/tests/test-guard-beta.sh"
+  # A script whose test does not share its extension. The real suite has exactly
+  # one of these, propose-commit-message.mjs tested by a .sh file, and pairing
+  # them by exact filename silently delivers that test to nobody.
+  printf 'console.log("CANON-GAMMA");\n' > "$root/sovereign/scripts/git/gamma.mjs"
+  printf '#!/usr/bin/env bash\nexit 0\n' > "$root/sovereign/scripts/git/tests/test-gamma.sh"
   chmod +x "$root/sovereign/scripts/git/tests/"*.sh
 }
 
@@ -73,6 +78,23 @@ report "delivered test is executable" executable "$got"
 # --- the test for a guard the consumer LACKS is not delivered ---------------
 [[ -f "$root/ConsumerA/scripts/git/tests/test-guard-beta.sh" ]] && got=delivered || got=absent
 report "test for an absent guard is withheld" absent "$got"
+rm -rf "$root"
+
+# --- a test whose script has a different extension is still delivered -------
+root="$(mktemp -d)"; build_canonical "$root"
+mkdir -p "$root/ConsumerA/scripts/git"
+cp "$root/sovereign/scripts/git/gamma.mjs" "$root/ConsumerA/scripts/git/gamma.mjs"
+run_sync "$root" >/dev/null
+[[ -f "$root/ConsumerA/scripts/git/tests/test-gamma.sh" ]] && got=delivered || got=absent
+report "test for a .mjs script is delivered" delivered "$got"
+
+# ...and the extension is not a wildcard: a consumer without gamma at all must
+# not receive its test just because the names nearly match.
+mkdir -p "$root/ConsumerB/scripts/git"
+cp "$root/sovereign/scripts/git/guard-alpha.sh" "$root/ConsumerB/scripts/git/guard-alpha.sh"
+run_sync "$root" >/dev/null
+[[ -f "$root/ConsumerB/scripts/git/tests/test-gamma.sh" ]] && got=delivered || got=absent
+report "test for an absent .mjs script is withheld" absent "$got"
 rm -rf "$root"
 
 # --- a stale delivered test is refreshed ------------------------------------
