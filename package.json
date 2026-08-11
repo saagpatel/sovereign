@@ -46,7 +46,7 @@
 		"@vitejs/plugin-react": "^6.0.5",
 		"eslint": "^10.8.1",
 		"eslint-config-next": "15.5.15",
-		"jsdom": "^25.0.1",
+		"jsdom": "^30.0.1",
 		"postcss": "^8.5.26",
 		"tailwindcss": "^4.3.3",
 		"typescript": "^6.0.3",
