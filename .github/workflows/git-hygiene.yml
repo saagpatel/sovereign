@@ -32,9 +32,23 @@ jobs:
         with:
           script: |
             const branch = context.payload.pull_request?.head?.ref || "";
-            const pattern = /^codex\/(feat|fix|chore|refactor|docs|test|perf|ci|spike|hotfix)\/[a-z0-9]+(?:-[a-z0-9]+)*$/;
+            // Namespaced and lowercase, with the machine-generated namespaces
+            // exempt. Bots name their own branches, so gating them only turns
+            // every dependency PR red without anyone being able to act on it.
+            const types = "feat|fix|chore|refactor|docs|test|perf|ci|build|style|spike|hotfix";
+            const pattern = new RegExp(
+              "^(?:" +
+                "(?:dependabot|renovate)\\/.+" +
+                "|revert-\\d+-.+" +
+                "|codex\\/[a-z0-9][a-z0-9._\\/-]*" +
+                "|(?:" + types + ")\\/[a-z0-9][a-z0-9._\\/-]*" +
+              ")$"
+            );
             if (!pattern.test(branch)) {
-              core.setFailed(`Invalid branch name: ${branch}`);
+              core.setFailed(
+                `Invalid branch name: ${branch}. Expected <type>/<name>, codex/<name>, ` +
+                `or a bot namespace. Types: ${types.split("|").join(", ")}.`
+              );
             }
 
   secrets:
