@@ -113,8 +113,8 @@ function MetricChart({ title, data }: MetricChartProps) {
 						}}
 						itemStyle={{ color: CHART_COLORS.tooltipText }}
 						labelStyle={{ color: CHART_COLORS.tooltipLabel }}
-						formatter={(value: number, name: string) => [
-							value.toFixed(2),
+						formatter={(value, name) => [
+							typeof value === "number" ? value.toFixed(2) : String(value ?? ""),
 							name === "p50" ? "Median" : name === "p10" ? "P10" : "P90",
 						]}
 					/>
