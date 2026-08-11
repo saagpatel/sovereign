@@ -9,7 +9,13 @@ if ! command -v gitleaks >/dev/null 2>&1; then
   # Everywhere else the bundle is CI-gated or its calling workflow never runs,
   # so this branch costs nothing. Both variable spellings are accepted because
   # different repos in the portfolio checked different ones.
-  if [[ -n "${CI:-}" || -n "${GITHUB_ACTIONS:-}" ]]; then
+  #
+  # The value is checked, not merely the variable's presence. Every system that
+  # reaches this branch for real sets exactly "true" (GitHub Actions, and GitLab
+  # for the one repo that has a pipeline). Testing presence instead would let
+  # CI=false, or a developer who exports CI for unrelated tooling, silently turn
+  # off the only secret check a local commit gets.
+  if [[ "${CI:-}" == "true" || "${GITHUB_ACTIONS:-}" == "true" ]]; then
     echo "gitleaks not found in this CI job; skipping the local secret guard."
     # Deliberately not claiming CI scanning covers this. In much of the
     # portfolio the gitleaks workflow triggers on pull_request only, so a
