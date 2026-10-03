@@ -12,7 +12,7 @@ Sovereign is a browser-based geopolitical simulation tool. Apply a policy lever 
 - **6 policy domains** — trade, energy, military, immigration, monetary, and technology
 - **Monte Carlo engine** — up to 50 simulation passes in a Web Worker via Comlink; no UI blocking
 - **Confidence bands** — p10/p50/p90 bands across GDP growth, inflation, trade openness, debt-to-GDP, foreign reserves, and 5 other variables
-- **Interactive world map** — D3-geo + TopoJSON globe with country selection and hover tooltips
+- **Interactive world map** — D3-geo + TopoJSON SVG world map with country selection
 - **Timeline scrubber** — step through any of the 60 months to see the state at that moment
 - **Causal chain view** — top-10 ranked causal links explaining how your policy propagated
 
@@ -70,18 +70,18 @@ need no simulation session or browser run.
 
 | Layer | Technology |
 |-------|------------|
-| Framework | Next.js 15 (App Router) |
-| Language | TypeScript 5.7 |
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript 6.x |
 | Simulation | Web Worker via Comlink |
 | State | Zustand |
 | Geo visualization | D3-geo + TopoJSON |
 | Charts | Recharts |
-| Styling | Tailwind CSS 3 |
+| Styling | Tailwind CSS 4 |
 | Testing | Vitest + Testing Library |
 
 ## Architecture
 
-The simulation engine runs entirely in a Web Worker, keeping the UI responsive during heavy Monte Carlo passes. Comlink provides a transparent async proxy so the React layer calls `await worker.simulate(params)` like a regular function. Results — p10/p50/p90 bands for all 10 variables across all 18 entities — are streamed back to Zustand stores that drive the D3 map and Recharts panels simultaneously.
+Monte Carlo simulations run in a Web Worker, keeping the UI responsive during heavy Monte Carlo passes. Comlink provides a transparent async proxy so the React layer calls `await api.runSim(config, baseline, onProgress)` like a regular function. Results — p10/p50/p90 bands for all 10 variables across all 18 entities — are returned when the run completes and stored in the Zustand store that drives the D3 map and Recharts panels simultaneously.
 
 ## License
 
