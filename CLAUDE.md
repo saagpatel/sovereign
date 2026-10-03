@@ -4,7 +4,7 @@ Client-side geopolitical simulation: select a country + policy lever, run a 50-r
 
 ## Stack
 
-- Next.js 15.x — App Router, `output: 'export'` static build
+- Next.js 16.x — App Router, `output: 'export'` static build
 - React 19.x — hooks only
 - TypeScript 6.x — strict mode, zero `any`
 - Tailwind CSS 4.x
@@ -21,7 +21,7 @@ pnpm build        # Next.js static export
 pnpm typecheck    # tsc --noEmit
 pnpm test         # vitest (watch)
 pnpm test:run     # vitest run (CI)
-pnpm lint         # next lint
+pnpm lint         # legacy next lint script; unavailable in Next.js 16
 ```
 
 Deployment: Vercel (`vercel.json` + `@vercel/analytics`); self-hosting via nginx documented in DEPLOYMENT.md.
@@ -50,9 +50,9 @@ Deployment: Vercel (`vercel.json` + `@vercel/analytics`); self-hosting via nginx
 | Uncertainty model | 50-run Monte Carlo, Gaussian noise σ=0.15× | Stable confidence bands, < 4s on M1 Air |
 | Map library | D3-geo + TopoJSON | SVG control for choropleth + connection lines |
 | State management | Zustand | Minimal boilerplate, Worker-message-friendly |
-| Countries | 18 blocs (see ROADMAP) | Tractable influence graph, all major actors covered |
+| Countries | 18 countries/blocs (see IMPLEMENTATION-ROADMAP.md) | Tractable influence graph, all major actors covered |
 | Deployment | Vercel static export | `vercel.json` in place; nginx self-hosting in DEPLOYMENT.md |
-| Baseline data | Hardcoded 2025 + optional WB refresh | Stable default, public API, no keys needed |
+| Baseline data | Hardcoded 2023-sourced estimates + optional WB refresh | Stable default, public API, no keys needed |
 
 Phase history: IMPLEMENTATION-ROADMAP.md. Deployment status: docs/PORTFOLIO-DISPOSITION.md.
 
@@ -70,7 +70,7 @@ See IMPLEMENTATION-ROADMAP.md for full phase history. See docs/PORTFOLIO-DISPOSI
 
 ## Stack
 
-- Next.js: 15.x (App Router, `output: 'export'` static build)
+- Next.js: 16.x (App Router, `output: 'export'` static build)
 - React: 19.x (hooks only, no class components)
 - TypeScript: 6.x (strict mode, zero `any`)
 - Tailwind CSS: 4.x

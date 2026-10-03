@@ -35,11 +35,7 @@ Sovereign is a client-side geopolitical simulation tool with a Web Worker Monte 
 ## Verification
 
 - Use `.codex/verify.commands` as the canonical verifier for routine Codex work.
-- Current canonical verifier:
-  - `pnpm install --frozen-lockfile`
-  - `pnpm test:run`
-  - `pnpm typecheck`
-  - `pnpm build`
+- See [README verification](README.md#verification) for prerequisites, focused checks, and the CI audit gate.
 - Current caveat: Vitest reports that `vite-tsconfig-paths` can be replaced by Vite's native `resolve.tsconfigPaths` option; this is warning-level cleanup.
 - Add targeted browser or Playwright checks when simulation UI behavior changes.
 
