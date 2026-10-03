@@ -19,11 +19,12 @@ Sovereign is a browser-based geopolitical simulation tool. Apply a policy lever 
 ## Quick Start
 
 ### Prerequisites
-- Node.js 18+
+- Node.js 22.22.2+ in the Node 22 line (the locked jsdom 30 test environment requires it)
+- pnpm 11.5.2, as pinned by `packageManager` in `package.json`
 
 ### Installation
 ```bash
-pnpm install
+pnpm install --frozen-lockfile
 ```
 
 ### Usage
@@ -31,12 +32,39 @@ pnpm install
 # Development server
 pnpm dev
 
-# Run tests
-pnpm test
+# Run tests once (pnpm test is watch mode outside CI)
+pnpm test:run
 
 # Type-check
 pnpm typecheck
 ```
+
+## Verification
+
+Run commands from the root using the committed `pnpm-lock.yaml` and the pinned
+pnpm version. There is no npm lockfile for `npm ci`. A focused deterministic
+store check is:
+
+```bash
+pnpm test:run src/store/simStore.test.ts
+```
+
+[`.codex/verify.commands`](.codex/verify.commands) is the authoritative routine
+lane: frozen install, one-shot tests, typecheck, and static build. Run the listed
+commands from the root. CI additionally runs `pnpm audit --audit-level high`;
+a vulnerability/publication failure is a separate blocking gate, even when the
+local tests/build pass. Do not lower that threshold to deliver documentation.
+
+The current `lint` script invokes `next lint`, which Next 16 does not provide;
+the checked-in legacy ESLint config is not a functioning ESLint 10 lane. No
+formatter command is configured. Report this tooling limitation rather than
+counting `pnpm lint` as successful or inventing a replacement gate.
+
+For changes to map selection, simulation controls, calibration, confidence bands,
+or responsiveness, start `pnpm dev` on a disposable local port and use synthetic
+scenarios for browser/Playwright checks. Keep external data connectors unused
+unless that capability is specifically being tested. Pure documentation changes
+need no simulation session or browser run.
 
 ## Tech Stack
 
