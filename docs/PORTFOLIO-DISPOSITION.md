@@ -38,16 +38,16 @@ Per memory: v1 complete, 115 tests.
 ## Current state in one paragraph
 
 Sovereign is a browser-based geopolitical simulation: apply a
-policy lever (tariff / military spending / immigration / currency /
-sanctions / foreign aid / 4 more) to any of **18 countries and
+policy lever in one of six domains (trade / energy / military /
+immigration / monetary / technology) to any of **18 countries and
 blocs** (US, EU, China, Russia, UK, India, Japan, Brazil, etc.),
 then watch cascading effects ripple across the world over a
 **60-month horizon**. Up to **50 Monte Carlo passes** with
 configurable noise produce **p10/p50/p90 confidence bands** for
 10 macroeconomic variables per country (GDP growth, inflation,
-unemployment, trade balance, and 6 others). Simulation runs in a
+trade openness, debt-to-GDP, foreign reserves, and 5 others). Monte Carlo simulation runs in a
 **Web Worker via Comlink** — no UI blocking. UI: D3-geo +
-TopoJSON globe with hover tooltips, 60-month timeline scrubber,
+TopoJSON SVG world map with country selection, 60-month timeline scrubber,
 top-10 causal-chain view. Per memory: v1 complete + 115 tests.
 Release commits confirm Playwright E2E (production canary) +
 Vercel analytics + accessibility audit — production-hardened.
