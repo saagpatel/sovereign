@@ -13,6 +13,7 @@ overrides:
   # ws reaches the tree only through jsdom and vitest, so this is test-time
   # only and has no runtime API surface to break.
   ws: ">=8.21.0"
+  undici: ^8.10.2
 
   # sharp arrives only as next's optional image-optimization dependency, and
   # this app is output: "export", so there is no server to run that pipeline
