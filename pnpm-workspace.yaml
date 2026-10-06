@@ -1,3 +1,6 @@
+patchedDependencies:
+  '@next/eslint-plugin-next@16.3.3': patches/@next__eslint-plugin-next@16.3.3.patch
+
 allowBuilds:
   sharp: true
   unrs-resolver: true
@@ -25,9 +28,8 @@ overrides:
   # enabled, and drop this line once the project is on next >= 16.3.
   sharp: ">=0.35.3"
 
-  # brace-expansion is scoped to one path on purpose. The tree carries two
-  # copies: 1.1.15 under minimatch@3, which is the vulnerable one, and 5.0.7
-  # under minimatch@10, which is already fixed. An unscoped range collapses both
-  # onto 5.x, which forces a major on a consumer that asks for ^1.1.7. The fix
-  # exists inside 1.x, so lift only the copy that needs lifting.
-  minimatch@3>brace-expansion: ">=1.1.16 <2"
+  # Keep each brace-expansion line on the same major its minimatch consumer
+  # requests while applying the currently published security floors.
+  minimatch@3>brace-expansion: ">=1.1.20 <2"
+  minimatch@10>brace-expansion: ">=5.0.11 <6"
+  source-map-js: ">=1.2.2 <2"
